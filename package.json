@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/thinkingmik/identity-manager.git"
+    "url": "https://github.com/thinkingmik/ideman.git"
   },
   "keywords": [
     "identity",
@@ -23,9 +23,9 @@
   "author": "Michele Andreoli <michi.andreoli@gmail.com> (https://github.com/thinkingmik)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/thinkingmik/identity-manager/issues"
+    "url": "https://github.com/thinkingmik/ideman/issues"
   },
-  "homepage": "https://github.com/thinkingmik/identity-manager#readme",
+  "homepage": "https://github.com/thinkingmik/ideman#readme",
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
     "bluebird": "^3.3.5",
