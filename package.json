@@ -2,10 +2,10 @@
   "name": "ideman",
   "version": "1.0.0",
   "description": "Node module for users authentication management",
-  "main": "./lib/index.js",
+  "main": "./lib/ideman.js",
   "scripts": {
     "test": "node ./test/app.js",
-    "start": "node ./lib/index.js"
+    "start": "node ./lib/ideman.js"
   },
   "repository": {
     "type": "git",
@@ -28,7 +28,6 @@
   "homepage": "https://github.com/thinkingmik/ideman#readme",
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
-    "bluebird": "^3.3.5",
     "crypto": "0.0.3",
     "fs": "0.0.2",
     "jsonwebtoken": "^6.2.0",
