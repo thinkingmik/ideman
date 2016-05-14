@@ -1,27 +1,18 @@
-NodeJS OAuth2 API Server
+Identity Manager
 ================
 Implement OAuth2.0 and basic authentication cleanly into your NodeJS server application.
 
 # Overview
-**WARNING**: 
+**WARNING**:
 In this demo application we will work on our local machine and will not using `HTTPS` – but you MUST use `HTTPS` in production. Without it, all API authentication mechanisms are compromised.
 
 # Summary
-* [Installation](#installation)
 * [Basic authentication](#basic_authentication)
 * [OAuth2 authorization flows](#authorization_grants)
   * [Authorization code](#authorization_code)
   * [User credentials](#user_credentials)
   * [Client credentials](#client_credentials)
   * [Refresh token](#refresh_token)
-
-# <a name="installation"></a>Installation
-In the project's directory, run the following commands:
-```
-$ npm install
-$ npm start
-```
-Application starts at `http://localhost:3000`
 
 # <a name="basic_authentication"></a>Basic authentication
 `HTTP Basic authentication` implementation is the simplest technique for enforcing access controls to web resources because it doesn't require cookies, session identifier and login pages. This authentication method uses static, standard fields in the HTTP header.
