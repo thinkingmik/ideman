@@ -7,12 +7,58 @@ Implement OAuth2.0 and basic authentication cleanly into your NodeJS server appl
 In this demo application we will work on our local machine and will not using `HTTPS` – but you MUST use `HTTPS` in production. Without it, all API authentication mechanisms are compromised.
 
 # Summary
+* [Installation](#install)
+* [Usage](#usage)
 * [Basic authentication](#basic_authentication)
 * [OAuth2 authorization flows](#authorization_grants)
   * [Authorization code](#authorization_code)
   * [User credentials](#user_credentials)
   * [Client credentials](#client_credentials)
   * [Refresh token](#refresh_token)
+
+# <a name="install"></a>Installation
+In your project root run from command line:
+```
+npm install -save ideman
+```
+
+# <a name="usage"></a>Usage
+Create a new file in your project root like:
+```javascript
+//file: ./ideman.js
+var knex = require('knex')({
+  client: 'pg',
+  connection: 'postgres://postgres:postgres@localhost:5432/test?charset=utf-8&ssl=true',
+});
+var Bookshelf = require('bookshelf')(knex);
+var ideman = require('ideman')(Bookshelf);
+
+ideman.init({
+  token: {
+    life: 3600 //token expiration in seconds
+  },
+  oauth: {
+    authentications: ['bearer'], //enable bearer token
+    grants: ['password'] //enable user credentials grant
+  }
+});
+
+module.exports = ideman;
+```
+Then include this file everywhere you need `ideman` methods, for example in your Express API route:
+```javascript
+//file: ./routes/index.js
+var express = require('express');
+var router = express.Router();
+var ideman = require('../ideman');
+
+router.route('/oauth2/token').post(ideman.isClientAuthenticated, ideman.token);
+router.route('/protected/resource').post(ideman.isAuthenticated, function() {
+  res.json({
+    data: 'The protected resource'
+  });
+});
+```
 
 # <a name="basic_authentication"></a>Basic authentication
 `HTTP Basic authentication` implementation is the simplest technique for enforcing access controls to web resources because it doesn't require cookies, session identifier and login pages. This authentication method uses static, standard fields in the HTTP header.
