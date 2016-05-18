@@ -44,8 +44,8 @@ ideman.init({
     life: 3600 //token expiration in seconds
   },
   oauth: {
-    authentications: ['bearer'], //enable bearer token
-    grants: ['password'] //enable user credentials grant
+    authentications: ['bearer' /*, basic*/], //enable bearer token
+    grants: ['password' /*, client_credentials*/] //enable user credentials grant
   }
 });
 
@@ -65,6 +65,24 @@ router.route('/protected/resource').post(ideman.isAuthenticated, function() {
   });
 });
 ```
+
+Now call the endpoint `/oauth2/token` to retrieve an access token:
+```
+$ curl -H 'Accept: application/x-www-form-urlencoded' -X POST -d 'grant_type=password&client_id=clientId&client_secret=clientSecret&username=userId&password=userPassword' http://localhost:3000/oauth2/token
+```
+
+It will return a JSON response:
+```json
+{
+  "access_token":"NgvhmoKm9ASMCa3KGLh2yjNPqhIhFLEgPacesMFiIOQPuZ1Mq19Xg"
+}
+```
+
+With the new `access_token` you can call the protected resource `/protected/resource`
+```
+$ curl -H 'Authorization: Bearer NgvhmoKm9ASMCa3KGLh2yjNPqhIhFLEgPacesMFiIOQPuZ1Mq19Xg' -X POST http://localhost:3000/protected/resource
+```
+
 # <a name="features"></a>Features
 Coming soon... I'm working hard!
 
