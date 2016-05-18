@@ -2,27 +2,33 @@ Identity Manager
 ================
 Implement OAuth2.0 and basic authentication cleanly into your NodeJS server application.
 
-# Overview
-**WARNING**:
-In this demo application we will work on our local machine and will not using `HTTPS` – but you MUST use `HTTPS` in production. Without it, all API authentication mechanisms are compromised.
-
 # Summary
+* [Setup](#setup)
 * [Installation](#install)
 * [Usage](#usage)
-* [Basic authentication](#basic_authentication)
-* [OAuth2 authorization flows](#authorization_grants)
+* [Features](#features)
+* [About authorizations](#authorization_grants)
+  * [Basic authentication](#basic_authentication)
   * [Authorization code](#authorization_code)
   * [User credentials](#user_credentials)
   * [Client credentials](#client_credentials)
   * [Refresh token](#refresh_token)
 
+# <a name="setup"></a>Setup
+This module requires a database infrastructure. To automate the creation of schemas and others boring jobs, `ideman` provides a node command line tool called [`ideman-cli`](https://github.com/thinkingmik/ideman-cli).
+So, before continue with the installation of this module, go to [`ideman-cli`](https://github.com/thinkingmik/ideman-cli) project and then return here once you have a database infrastructure.
+
 # <a name="install"></a>Installation
+**WARNING**:
+Remember that before installing `ideman` you MUST create the database schemas, otherwise this module will not work ([`ideman-cli`](https://github.com/thinkingmik/ideman-cli)).
+
 In your project root run from command line:
 ```
 npm install -save ideman
 ```
 
 # <a name="usage"></a>Usage
+Let's start! Install in your application [`Bookshelf`](http://bookshelfjs.org/) and its dependency [`knex`](http://knexjs.org/).  
 Create a new file in your project root like:
 ```javascript
 //file: ./ideman.js
@@ -45,7 +51,7 @@ ideman.init({
 
 module.exports = ideman;
 ```
-Then include this file everywhere you need `ideman` methods, for example in your Express API route:
+Then include this file everywhere you need `ideman` methods, for example in your Express application you could have:
 ```javascript
 //file: ./routes/index.js
 var express = require('express');
@@ -59,8 +65,13 @@ router.route('/protected/resource').post(ideman.isAuthenticated, function() {
   });
 });
 ```
+# <a name="features"></a>Features
+Coming soon... I'm working hard!
 
-# <a name="basic_authentication"></a>Basic authentication
+# <a name="authorization_grants"></a>About authorizations
+OAuth 2.0 is the next evolution of the OAuth protocol which was originally created in late 2006. OAuth 2.0 focuses on client developer simplicity while providing specific authorization flows for web applications, desktop applications, mobile phones, and living room devices.
+
+## <a name="basic_authentication"></a>Basic authentication
 `HTTP Basic authentication` implementation is the simplest technique for enforcing access controls to web resources because it doesn't require cookies, session identifier and login pages. This authentication method uses static, standard fields in the HTTP header.
 ## Use cases
 * service calls
@@ -70,9 +81,6 @@ Send in the user credentials directly in the header to call a protected resource
 ```
 $ curl -u userId:userPwd -X GET http://localhost:3000/users
 ```
-
-# <a name="authorization_grants"></a>OAuth2 authorization flows
-OAuth 2.0 is the next evolution of the OAuth protocol which was originally created in late 2006. OAuth 2.0 focuses on client developer simplicity while providing specific authorization flows for web applications, desktop applications, mobile phones, and living room devices.
 
 ## <a name="authorization_code"></a>Authorization Code
 The `Authorization Code` grant type is used when the client wants to request access to protected resources on behalf of another user (i.e. a 3rd party). This is the grant type most often associated with OAuth.
