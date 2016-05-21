@@ -5,14 +5,19 @@ Implement OAuth2.0 and basic authentication cleanly into your NodeJS server appl
 # Summary
 * [Setup](#setup)
 * [Installation](#install)
-* [Usage](#usage)
-* [Features](#features)
+* [Example](#usage)
+* [Documentation](#documentation)
+  * [Construction](#construction)
+  * [Methods](#methods)
+  * [Middlewares](#middlewares)
+  * [Endpoints](#endpoints)
 * [About authorizations](#authorization_grants)
   * [Basic authentication](#basic_authentication)
   * [Authorization code](#authorization_code)
   * [User credentials](#user_credentials)
   * [Client credentials](#client_credentials)
   * [Refresh token](#refresh_token)
+* [License](#license)
 
 # <a name="setup"></a>Setup
 This module requires a database infrastructure. To automate the creation of schemas and others boring jobs, `ideman` provides a node command line tool called [`ideman-cli`](https://github.com/thinkingmik/ideman-cli).
@@ -27,7 +32,7 @@ In your project root run from command line:
 npm install -save ideman
 ```
 
-# <a name="usage"></a>Usage
+# <a name="usage"></a>Example
 Let's start! Install in your application [`Bookshelf`](http://bookshelfjs.org/) and its dependency [`knex`](http://knexjs.org/).  
 Create a new file in your project root like:
 ```javascript
@@ -83,8 +88,172 @@ With the new `access_token` you can call the protected resource `/protected/reso
 $ curl -H 'Authorization: Bearer NgvhmoKm9ASMCa3KGLh2yjNPqhIhFLEgPacesMFiIOQPuZ1Mq19Xg' -X POST http://localhost:3000/protected/resource
 ```
 
-# <a name="features"></a>Features
-Coming soon... I'm working hard!
+# <a name="documentation"></a>Documentation
+* [Construction](#construction)
+* [Methods](#methods)
+* [Middlewares](#middlewares)
+
+## <a name="construction"></a>Construction
+### <a name="require"/>require('ideman')( bookshelf ) : Object
+The `ideman` module is initialized by injecting an initialized `Bookshelf` instance.
+
+__Arguments__
+
+```javascript
+    bookshelf   {Object} Bookshelf instance
+```
+
+__Return__
+
+```javascript
+    {Object} Singleton instance
+```
+
+## <a name="methods"></a>Methods
+* [init](#initialize)
+* [getConfig](#getconfig)
+* [getBookshelf](#getbookshelf)
+* [getPassport](#getpassport)
+* [getModel](#getmodel)
+* [getModels](#getmodels)
+
+### <a name="initialize"/>init( options ) : void
+Initialization of singleton instance.
+
+__Arguments__
+
+```javascript
+    options  {Object} Ideman parameters
+```
+
+If you don't specify any paramaters, it use a default object:
+```javascript
+{
+  oauth2: {
+    //Enables authentications strategies
+    authentications: ['basic', 'bearer'],
+    //Enables authorizations grants
+    grants: ['client_credentials', 'password']
+  },
+  crypto: {
+    //Secret key to cypher/decypher client secret
+    secretKey: 'o!rDE(Qbrq7u4OV',
+    //Input encoding for client secret before cypher
+    inputEncoding: 'utf8',
+    //Output encoding for client secret after cypher
+    outputEncoding: 'base64'
+  },
+  token: {
+    //Token life in seconds
+    life: 3600,
+    //Token legth in bytes
+    length: 32, //bytes
+    jwt: {
+      //Enables jwt token instead the standard token
+      enabled: false,
+      //Check if IP caller are the same of jwt IP when it was created
+      ipcheck: false,
+      //Check if user-agent caller are the same of jwt user-agent when it was created
+      uacheck: false,
+      //Secret key for signing jwt token
+      secretKey: 'K7pHX4OASe?c&lm'
+    }
+  }
+}
+```
+---------------------------------------
+
+### <a name="getconfig"/>getConfig() : Object
+Gets the `ideman` initialization object.
+
+__Return__
+
+```javascript
+    {Object} Ideman parameters
+```
+---------------------------------------
+
+### <a name="getbookshelf"/>getBookshelf() : Object
+Gets the `Bookshelf` instance.
+
+__Return__
+
+```javascript
+    {Object} Bookshelf instance
+```
+---------------------------------------
+
+### <a name="getpassport"/>getPassport() : Object
+Gets the `passport` instance.
+
+__Return__
+
+```javascript
+    {Object} Passport instance
+```
+
+It is useful when you need to initialize `passport` for `Express` without installing it in your application.
+For example when you use the middlewares methods of `ideman` module, your `Express` application needs to be configured with:
+
+```javascript
+var app = express();
+app.use(passport.initialize());
+app.use(passport.session()); //optional
+```
+---------------------------------------
+
+### <a name="getmodel"/>getModel( name ) : Object
+Gets a `Bookshelf` model. Available models are: `User`, `Client`, `Token`, `Code`.
+
+__Arguments__
+
+```javascript
+    name  {String} Model name
+```
+
+__Return__
+
+```javascript
+    {Object} Bookshelf model
+```
+
+Now you can extend a `Bookshelf` model in your application:
+
+```javascript
+var bookshelf = ideman.getBookshelf();
+var User = ideman.getModel('User');
+var UserExt = bookshelf.model('UserExt', User.extend({
+    test: function() {
+      console.log('hello world');
+      return;
+    }
+}));
+console.log(UserExt.forge().tableName);
+```
+---------------------------------------
+
+### <a name="getmodels"/>getModels() : Array
+Gets all `Bookshelf` models `User`, `Client`, `Token`, `Code`.
+
+__Return__
+
+```javascript
+    {Array} All bookshelf models
+```
+
+## <a name="middlewares"></a>Middlewares (for `Express`)
+* [isAuthenticated](#isauthenticated)
+* [isClientAuthenticated](#isclientauthenticated)
+
+Coming soon, I'm working hard!!!
+
+## <a name="endpoints"></a>Endpoints (for `Express`)
+* [token](#token)
+* [logout](#logout)
+* [authorization](#authorization)
+* [decision](#decision)
+
+Coming soon, I'm working hard!!!
 
 # <a name="authorization_grants"></a>About authorizations
 OAuth 2.0 is the next evolution of the OAuth protocol which was originally created in late 2006. OAuth 2.0 focuses on client developer simplicity while providing specific authorization flows for web applications, desktop applications, mobile phones, and living room devices.
@@ -224,3 +393,8 @@ A successful token request will return a standard access token in JSON format:
   "token_type":"Bearer"
 }
 ```
+
+# <a name="license"></a>License
+The [MIT License](https://github.com/thinkingmik/ideman/blob/master/LICENSE)
+
+Copyright (c) 2016 Michele Andreoli <http://thinkingmik.com>

@@ -13,12 +13,14 @@
   },
   "keywords": [
     "identity",
-    "oauth",
+    "oauth2",
     "users",
     "token",
     "restful",
     "authentication",
-    "api"
+    "api",
+    "express",
+    "passport"
   ],
   "author": "Michele Andreoli <michi.andreoli@gmail.com> (https://github.com/thinkingmik)",
   "license": "MIT",
