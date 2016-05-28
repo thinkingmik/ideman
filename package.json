@@ -20,7 +20,8 @@
     "authentication",
     "api",
     "express",
-    "passport"
+    "passport",
+    "bookshelf"
   ],
   "author": "Michele Andreoli <michi.andreoli@gmail.com> (https://github.com/thinkingmik)",
   "license": "MIT",

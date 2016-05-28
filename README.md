@@ -49,14 +49,14 @@ ideman.init({
     life: 3600 //token expiration in seconds
   },
   oauth: {
-    authentications: ['bearer' /*, basic*/], //enable bearer token
-    grants: ['password' /*, client_credentials*/] //enable user credentials grant
+    authentications: ['bearer' /*, 'basic'*/], //enable bearer token
+    grants: ['password', 'refresh_token' /*, 'client_credentials' */] //enable user credentials and refresh token grants
   }
 });
 
 module.exports = ideman;
 ```
-Then include this file everywhere you need `ideman` methods, for example in your Express application you could have:
+Then include this file everywhere you need `ideman` methods, for example in your `Express` application you could have:
 ```javascript
 //file: ./routes/index.js
 var express = require('express');
@@ -126,14 +126,14 @@ __Arguments__
     options  {Object} Ideman parameters
 ```
 
-If you don't specify any paramaters, it use a default object:
+If you don't specify any paramaters, it uses a default object:
 ```javascript
 {
   oauth2: {
     //Enables authentications strategies
     authentications: ['basic', 'bearer'],
     //Enables authorizations grants
-    grants: ['client_credentials', 'password']
+    grants: ['client_credentials', 'password', 'refresh_token']
   },
   crypto: {
     //Secret key to cypher/decypher client secret
@@ -146,7 +146,7 @@ If you don't specify any paramaters, it use a default object:
   token: {
     //Token life in seconds
     life: 3600,
-    //Token legth in bytes
+    //Token length in bytes
     length: 32, //bytes
     jwt: {
       //Enables jwt token instead the standard token
