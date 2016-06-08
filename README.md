@@ -9,19 +9,19 @@ Implement OAuth2.0 and basic authentication cleanly into your NodeJS server appl
 * [Documentation](#documentation)
   * [Construction](#construction)
   * [Methods](#methods)
-  * [Middlewares](#middlewares)
-  * [Endpoints](#endpoints)
+  * [Express middlewares](#middlewares)
 * [About authorizations](#authorization_grants)
   * [Basic authentication](#basic_authentication)
   * [Authorization code](#authorization_code)
   * [User credentials](#user_credentials)
   * [Client credentials](#client_credentials)
   * [Refresh token](#refresh_token)
+* [Credits](#credits)
 * [License](#license)
 
 # <a name="setup"></a>Setup
-This module requires a database infrastructure. To automate the creation of schemas and others boring jobs, `ideman` provides a node command line tool called [`ideman-cli`](https://github.com/thinkingmik/ideman-cli).
-So, before continue with the installation of this module, go to [`ideman-cli`](https://github.com/thinkingmik/ideman-cli) project and then install `ideman` once you have created the database schemas.
+This module requires a database infrastructure. To automate the creation of schemas and others boring jobs, `ideman` provides a node command line interface tool called [`ideman-cli`](https://github.com/thinkingmik/ideman-cli).
+So, before continue with the installation of this module, go to [`ideman-cli`](https://github.com/thinkingmik/ideman-cli) project and then install `ideman`.
 
 # <a name="install"></a>Installation
 **WARNING**:
@@ -29,7 +29,7 @@ Remember that before installing `ideman` you MUST create the database schemas, o
 
 In your project root run from command line:
 ```
-npm install -save ideman
+$ npm install -save ideman
 ```
 
 # <a name="usage"></a>Example
@@ -71,7 +71,7 @@ router.route('/protected/resource').post(ideman.isAuthenticated, function() {
 });
 ```
 
-Now call the endpoint `/oauth2/token` to retrieve an access token:
+Call the endpoint `/oauth2/token` to retrieve an access token:
 ```
 $ curl -H 'Accept: application/x-www-form-urlencoded' -X POST -d 'grant_type=password&client_id=clientId&client_secret=clientSecret&username=userId&password=userPassword' http://localhost:3000/oauth2/token
 ```
@@ -80,6 +80,7 @@ It will return a JSON response:
 ```json
 {
   "access_token":"NgvhmoKm9ASMCa3KGLh2yjNPqhIhFLEgPacesMFiIOQPuZ1Mq19Xg"
+  ...
 }
 ```
 
@@ -94,19 +95,45 @@ $ curl -H 'Authorization: Bearer NgvhmoKm9ASMCa3KGLh2yjNPqhIhFLEgPacesMFiIOQPuZ1
 * [Middlewares](#middlewares)
 
 ## <a name="construction"></a>Construction
-### <a name="require"/>require('ideman')( bookshelf ) : Object
-The `ideman` module is initialized by injecting an initialized `Bookshelf` instance.
+### <a name="require"/>require('ideman')( bookshelf [, config]) : Object
+The `ideman` module is initialized by injecting an initialized `Bookshelf` instance. It can also accepts a configuration object for database customizations.
 
 __Arguments__
 
 ```javascript
-    bookshelf   {Object} Bookshelf instance
+bookshelf  {Object} Bookshelf instance
+[config]	 {Object} Optional models and tables configuration
 ```
 
 __Return__
 
 ```javascript
-    {Object} Singleton instance
+{Object} Singleton instance
+```
+
+The configuration object allows you to redefine tables and models names. If you don't specify any configuration, it uses a default object:
+```javascript
+{
+  prefix: '',
+  entities: {
+    user: {
+      table: 'users',
+      model: 'User'
+    },
+    client: {
+      table: 'clients',
+      model: 'Client'
+    },
+    token: {
+      table: 'tokens',
+      model: 'Token'
+    },
+    code: {
+      table: 'codes',
+      model: 'Code'
+    }
+  }
+}
 ```
 
 ## <a name="methods"></a>Methods
@@ -116,6 +143,13 @@ __Return__
 * [getPassport](#getpassport)
 * [getModel](#getmodel)
 * [getModels](#getmodels)
+* [validateUserCredentials](#validateusercredentials)
+* [validateClientCredentials](#validateclientcredentials)
+* [validateBearerToken](#validatebearertoken)
+* [exchangePassword](#exchangepassword)
+* [exchangeClientCredentials](#exchangeclientcredentials)
+* [exchangeRefreshToken](#exchangerefreshtoken)
+* [revokeToken](#revoketoken)
 
 ### <a name="initialize"/>init( options ) : void
 Initialization of singleton instance.
@@ -123,7 +157,7 @@ Initialization of singleton instance.
 __Arguments__
 
 ```javascript
-    options  {Object} Ideman parameters
+options  {Object} Ideman parameters
 ```
 
 If you don't specify any paramaters, it uses a default object:
@@ -169,7 +203,7 @@ Gets the `ideman` initialization object.
 __Return__
 
 ```javascript
-    {Object} Ideman parameters
+{Object} Ideman parameters
 ```
 ---------------------------------------
 
@@ -179,7 +213,7 @@ Gets the `Bookshelf` instance.
 __Return__
 
 ```javascript
-    {Object} Bookshelf instance
+{Object} Bookshelf instance
 ```
 ---------------------------------------
 
@@ -189,7 +223,7 @@ Gets the `passport` instance.
 __Return__
 
 ```javascript
-    {Object} Passport instance
+{Object} Passport instance
 ```
 
 It is useful when you need to initialize `passport` for `Express` without installing it in your application.
@@ -198,23 +232,22 @@ For example when you use the middlewares methods of `ideman` module, your `Expre
 ```javascript
 var app = express();
 app.use(passport.initialize());
-app.use(passport.session()); //optional
 ```
 ---------------------------------------
 
 ### <a name="getmodel"/>getModel( name ) : Object
-Gets a `Bookshelf` model. Available models are: `User`, `Client`, `Token`, `Code`.
+Gets a `Bookshelf` model. Available default models are: `User`, `Client`, `Token`, `Code`.
 
 __Arguments__
 
 ```javascript
-    name  {String} Model name
+name  {String} Model name
 ```
 
 __Return__
 
 ```javascript
-    {Object} Bookshelf model
+{Object} Bookshelf model
 ```
 
 Now you can extend a `Bookshelf` model in your application:
@@ -223,37 +256,225 @@ Now you can extend a `Bookshelf` model in your application:
 var bookshelf = ideman.getBookshelf();
 var User = ideman.getModel('User');
 var UserExt = bookshelf.model('UserExt', User.extend({
-    test: function() {
-      console.log('hello world');
-      return;
-    }
+  test: function() {
+    console.log('hello world');
+    return;
+  }
 }));
 console.log(UserExt.forge().tableName);
 ```
 ---------------------------------------
 
 ### <a name="getmodels"/>getModels() : Array
-Gets all `Bookshelf` models `User`, `Client`, `Token`, `Code`.
+Gets all `Bookshelf` models.
 
 __Return__
 
 ```javascript
-    {Array} All bookshelf models
+{Array} All bookshelf models
+```
+---------------------------------------
+
+### <a name="validateusercredentials"/>validateUserCredentials( username, password ) : Promise( Object )
+Checks if user credentials are valid.
+
+__Arguments__
+
+```javascript
+username  {String} Username
+password  {String} Clear password
 ```
 
-## <a name="middlewares"></a>Middlewares (for `Express`)
+__Return__
+
+```javascript
+{Object} Returns a promise with bookshelf `User` model
+```
+---------------------------------------
+
+### <a name="validateclientcredentials"/>validateClientCredentials( name, secret ) : Promise( Object )
+Checks if client credentials are valid.
+
+__Arguments__
+
+```javascript
+name    {String} Client name
+secret  {String} Clear client secret
+```
+
+__Return__
+
+```javascript
+{Object} Returns a promise with bookshelf `Client` model
+```
+---------------------------------------
+
+### <a name="validatebearertoken"/>validateBearerToken( token ) : Promise( Object )
+Checks if token is valid.
+
+__Arguments__
+
+```javascript
+token  {String} Bearer token
+```
+
+__Return__
+
+```javascript
+{Object} Returns a promise with referred bookshelf `User` or `Client` model
+```
+---------------------------------------
+
+### <a name="exchangepassword"/>exchangePassword( client, username, password [, ip, userAgent] ) : Promise( Object )
+Exchanges user's credentials for an access token. The client input object must be an existing entity into database.
+
+__Arguments__
+
+```javascript
+client       {Object} Bookshelf `Client` model
+username     {String} Username
+password     {String} Clear password
+[ip]  	   {String} Optional IP address to save with token
+[userAgent]  {String} Optional user agent to save with token
+```
+
+__Return__
+
+```javascript
+{Object} Returns a promise with tokens
+```
+
+The returned JSON object is like:
+```json
+{
+  "access_token":"<token>",
+  "refresh_token":"<refreshtoken>",
+  "expires_in":3600,
+  "token_type":"Bearer"
+}
+```
+---------------------------------------
+
+### <a name="exchangeclientcredentials"/>exchangeClientCredentials( client [, ip, userAgent] ) : Promise( Object )
+Exchanges client's credentials for an access token. The client input object must be an existing entity into database.
+
+__Arguments__
+
+```javascript
+client       {Object} Bookshelf `Client` model
+[ip]  	   {String} Optional IP address to save with token
+[userAgent]  {String} Optional user agent to save with token
+```
+
+__Return__
+
+```javascript
+{Object} Returns a promise with tokens
+```
+
+The returned JSON object is like:
+```json
+{
+  "access_token":"<token>",
+  "refresh_token":"<refreshtoken>",
+  "expires_in":3600,
+  "token_type":"Bearer"
+}
+```
+---------------------------------------
+
+### <a name="exchangerefreshtoken"/>exchangeRefreshToken( client, refreshToken ) : Promise( Object )
+Exchanges a refesh token for a new access token. The client input object must be an existing entity into database.
+
+__Arguments__
+
+```javascript
+client        {Object} Bookshelf `Client` model
+refreshToken  {String} Refresh token
+```
+
+__Return__
+
+```javascript
+{Object} Returns a promise with tokens
+```
+
+The returned JSON object is like:
+```json
+{
+  "access_token":"<token>",
+  "refresh_token":"<refreshtoken>",
+  "expires_in":3600,
+  "token_type":"Bearer"
+}
+```
+---------------------------------------
+
+### <a name="revoketoken"/>revokeToken( token ) : Promise( boolean )
+Revokes a token.
+
+__Arguments__
+
+```javascript
+token  {String} Access token
+```
+
+__Return__
+
+```javascript
+{boolean} Returns true
+```
+
+## <a name="middlewares"></a>`Express` middlewares
 * [isAuthenticated](#isauthenticated)
 * [isClientAuthenticated](#isclientauthenticated)
-
-Coming soon, I'm working hard!!!
-
-## <a name="endpoints"></a>Endpoints (for `Express`)
 * [token](#token)
 * [logout](#logout)
-* [authorization](#authorization)
-* [decision](#decision)
 
-Coming soon, I'm working hard!!!
+### <a name="isauthenticated"/>isAuthenticated
+This middleware protects your endpoint and checks if request contains basic credentials or a valid bearer token.
+See [`about authorizations`](https://github.com/thinkingmik/ideman#authorization_grants) for request's details.
+
+__Example__
+
+```javascript
+router.route('/protected/resource').post(ideman.isAuthenticated, function() {
+  res.json({
+    data: 'The protected resource'
+  });
+});
+```
+---------------------------------------
+
+### <a name="isclientauthenticated"/>isClientAuthenticated
+This middleware has been used with [`token`](https://github.com/thinkingmik/ideman#token) endpoint and checks for valid client credentials before getting an access token.
+See [`about authorizations`](https://github.com/thinkingmik/ideman#authorization_grants) for request's details.
+
+__Example__
+
+```javascript
+router.route('/oauth2/token').post(ideman.isClientAuthenticated, ideman.token);
+```
+---------------------------------------
+
+### <a name="token"/>token
+This endpoint has been used with [`isClientAuthenticated`](https://github.com/thinkingmik/ideman#isclientauthenticated) middleware and returns an access token.
+
+__Example__
+
+```javascript
+router.route('/oauth2/token').post(ideman.isClientAuthenticated, ideman.token);
+```
+---------------------------------------
+
+### <a name="logout"/>logout
+This endpoint has been used with [`isAuthenticated`](https://github.com/thinkingmik/ideman#isauthenticated) middleware and revokes the current token.
+
+__Example__
+
+```javascript
+router.route('/oauth2/logout').post(ideman.isAuthenticated, ideman.logout);
+```
 
 # <a name="authorization_grants"></a>About authorizations
 OAuth 2.0 is the next evolution of the OAuth protocol which was originally created in late 2006. OAuth 2.0 focuses on client developer simplicity while providing specific authorization flows for web applications, desktop applications, mobile phones, and living room devices.
@@ -393,6 +614,11 @@ A successful token request will return a standard access token in JSON format:
   "token_type":"Bearer"
 }
 ```
+
+# <a name="credits"></a>Credits
+- [oauth2orize](https://github.com/jaredhanson/oauth2orize) by Jared Hanson
+- [knex](https://github.com/tgriesser/knex) by Tim Griesser
+- [bookshelf](https://github.com/tgriesser/bookshelf) by Tim Griesser
 
 # <a name="license"></a>License
 The [MIT License](https://github.com/thinkingmik/ideman/blob/master/LICENSE)
