@@ -77,10 +77,10 @@ $ curl -H 'Accept: application/x-www-form-urlencoded' -X POST -d 'grant_type=pas
 ```
 
 It will return a JSON response:
-```json
+```javascript
 {
   "access_token":"NgvhmoKm9ASMCa3KGLh2yjNPqhIhFLEgPacesMFiIOQPuZ1Mq19Xg"
-  ...
+  /* ... */
 }
 ```
 
@@ -334,7 +334,7 @@ __Arguments__
 client       {Object} Bookshelf `Client` model
 username     {String} Username
 password     {String} Clear password
-[ip]  	   {String} Optional IP address to save with token
+[ip]  	     {String} Optional IP address to save with token
 [userAgent]  {String} Optional user agent to save with token
 ```
 
@@ -362,7 +362,7 @@ __Arguments__
 
 ```javascript
 client       {Object} Bookshelf `Client` model
-[ip]  	   {String} Optional IP address to save with token
+[ip]  	     {String} Optional IP address to save with token
 [userAgent]  {String} Optional user agent to save with token
 ```
 
