@@ -7,15 +7,15 @@ Implement OAuth2.0 and basic authentication cleanly into your NodeJS server appl
 * [Installation](#install)
 * [Example](#usage)
 * [Documentation](#documentation)
-  * [Construction](#construction)
-  * [Methods](#methods)
-  * [Express middlewares](#middlewares)
+* [Construction](#construction)
+* [Methods](#methods)
+* [Express middlewares](#middlewares)
 * [About authorizations](#authorization_grants)
-  * [Basic authentication](#basic_authentication)
-  * [Authorization code](#authorization_code)
-  * [User credentials](#user_credentials)
-  * [Client credentials](#client_credentials)
-  * [Refresh token](#refresh_token)
+* [Basic authentication](#basic_authentication)
+* [Authorization code](#authorization_code)
+* [User credentials](#user_credentials)
+* [Client credentials](#client_credentials)
+* [Refresh token](#refresh_token)
 * [Credits](#credits)
 * [License](#license)
 
@@ -309,13 +309,15 @@ __Return__
 ```
 ---------------------------------------
 
-### <a name="validatebearertoken"/>validateBearerToken( token ) : Promise( Object )
+### <a name="validatebearertoken"/>validateBearerToken( token [, ip, userAgent] ) : Promise( Object )
 Checks if token is valid.
 
 __Arguments__
 
 ```javascript
-token  {String} Bearer token
+token        {String} Bearer token
+[ip]  	     {String} Optional IP address to check
+[userAgent]  {String} Optional user agent to check
 ```
 
 __Return__
