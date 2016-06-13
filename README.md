@@ -7,15 +7,15 @@ Implement OAuth2.0 and basic authentication cleanly into your NodeJS server appl
 * [Installation](#install)
 * [Example](#usage)
 * [Documentation](#documentation)
-* [Construction](#construction)
-* [Methods](#methods)
-* [Express middlewares](#middlewares)
+  * [Construction](#construction)
+  * [Methods](#methods)
+  * [Express middlewares](#middlewares)
 * [About authorizations](#authorization_grants)
-* [Basic authentication](#basic_authentication)
-* [Authorization code](#authorization_code)
-* [User credentials](#user_credentials)
-* [Client credentials](#client_credentials)
-* [Refresh token](#refresh_token)
+  * [Basic authentication](#basic_authentication)
+  * [Authorization code](#authorization_code)
+  * [User credentials](#user_credentials)
+  * [Client credentials](#client_credentials)
+  * [Refresh token](#refresh_token)
 * [Credits](#credits)
 * [License](#license)
 
@@ -316,7 +316,7 @@ __Arguments__
 
 ```javascript
 token        {String} Bearer token
-[ip]  	     {String} Optional IP address to check
+[ip]         {String} Optional IP address to check
 [userAgent]  {String} Optional user agent to check
 ```
 
@@ -364,7 +364,7 @@ __Arguments__
 
 ```javascript
 client       {Object} Bookshelf `Client` model
-[ip]  	     {String} Optional IP address to save with token
+[ip]         {String} Optional IP address to save with token
 [userAgent]  {String} Optional user agent to save with token
 ```
 
