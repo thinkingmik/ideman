@@ -102,13 +102,13 @@ __Arguments__
 
 ```javascript
 bookshelf  {Object} Bookshelf instance
-[config]	 {Object} Optional models and tables configuration
+[config]	  {Object} Optional models and tables configuration
 ```
 
 __Return__
 
 ```javascript
-{Object} Singleton instance
+{Object}  Singleton instance
 ```
 
 The configuration object allows you to redefine tables and models names. If you don't specify any configuration, it uses a default object:
@@ -203,7 +203,7 @@ Gets the `ideman` initialization object.
 __Return__
 
 ```javascript
-{Object} Ideman parameters
+{Object}  Ideman parameters
 ```
 ---------------------------------------
 
@@ -213,7 +213,7 @@ Gets the `Bookshelf` instance.
 __Return__
 
 ```javascript
-{Object} Bookshelf instance
+{Object}  Bookshelf instance
 ```
 ---------------------------------------
 
@@ -223,7 +223,7 @@ Gets the `passport` instance.
 __Return__
 
 ```javascript
-{Object} Passport instance
+{Object}  Passport instance
 ```
 
 It is useful when you need to initialize `passport` for `Express` without installing it in your application.
@@ -241,13 +241,13 @@ Gets a `Bookshelf` model. Available default models are: `User`, `Client`, `Token
 __Arguments__
 
 ```javascript
-name  {String} Model name
+name  {String}  Model name
 ```
 
 __Return__
 
 ```javascript
-{Object} Bookshelf model
+{Object}  Bookshelf model
 ```
 
 Now you can extend a `Bookshelf` model in your application:
@@ -271,7 +271,7 @@ Gets all `Bookshelf` models.
 __Return__
 
 ```javascript
-{Array} All bookshelf models
+{Array}  All bookshelf models
 ```
 ---------------------------------------
 
@@ -288,7 +288,7 @@ password  {String} Clear password
 __Return__
 
 ```javascript
-{Object} Returns a promise with bookshelf `User` model
+{Object}  Returns a promise with bookshelf `User` model
 ```
 ---------------------------------------
 
@@ -305,7 +305,7 @@ secret  {String} Clear client secret
 __Return__
 
 ```javascript
-{Object} Returns a promise with bookshelf `Client` model
+{Object}  Returns a promise with bookshelf `Client` model
 ```
 ---------------------------------------
 
@@ -323,7 +323,7 @@ token        {String} Bearer token
 __Return__
 
 ```javascript
-{Object} Returns a promise with referred bookshelf `User` or `Client` model
+{Object}  Returns a promise with referred bookshelf `User` or `Client` model
 ```
 ---------------------------------------
 
@@ -336,14 +336,14 @@ __Arguments__
 client       {Object} Bookshelf `Client` model
 username     {String} Username
 password     {String} Clear password
-[ip]  	     {String} Optional IP address to save with token
+[ip]  	      {String} Optional IP address to save with token
 [userAgent]  {String} Optional user agent to save with token
 ```
 
 __Return__
 
 ```javascript
-{Object} Returns a promise with tokens
+{Object}  Returns a promise with tokens
 ```
 
 The returned JSON object is like:
@@ -371,7 +371,7 @@ client       {Object} Bookshelf `Client` model
 __Return__
 
 ```javascript
-{Object} Returns a promise with tokens
+{Object}  Returns a promise with tokens
 ```
 
 The returned JSON object is like:
@@ -398,7 +398,7 @@ refreshToken  {String} Refresh token
 __Return__
 
 ```javascript
-{Object} Returns a promise with tokens
+{Object}  Returns a promise with tokens
 ```
 
 The returned JSON object is like:
@@ -418,7 +418,7 @@ Revokes a token.
 __Arguments__
 
 ```javascript
-token  {String} Access token
+token  {String}  Access token
 ```
 
 __Return__
