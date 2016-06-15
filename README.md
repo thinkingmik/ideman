@@ -102,7 +102,7 @@ __Arguments__
 
 ```javascript
 bookshelf  {Object} Bookshelf instance
-[config]	  {Object} Optional models and tables configuration
+[config]   {Object} Optional models and tables configuration
 ```
 
 __Return__
@@ -336,7 +336,7 @@ __Arguments__
 client       {Object} Bookshelf `Client` model
 username     {String} Username
 password     {String} Clear password
-[ip]  	      {String} Optional IP address to save with token
+[ip]         {String} Optional IP address to save with token
 [userAgent]  {String} Optional user agent to save with token
 ```
 
