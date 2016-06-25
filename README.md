@@ -94,6 +94,7 @@ $ curl -H 'Authorization: Bearer NgvhmoKm9ASMCa3KGLh2yjNPqhIhFLEgPacesMFiIOQPuZ1
 * [Construction](#construction)
 * [Methods](#methods)
 * [Middlewares](#middlewares)
+* [Endpoints](#endpoints)
 
 ## <a name="construction"></a>Construction
 ### <a name="require"/>require('ideman')( bookshelf [, config]) : Object
