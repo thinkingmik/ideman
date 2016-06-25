@@ -10,6 +10,7 @@ Implement OAuth2.0 and basic authentication cleanly into your NodeJS server appl
   * [Construction](#construction)
   * [Methods](#methods)
   * [Express middlewares](#middlewares)
+  * [Express endpoints](#endpoints)
 * [About authorizations](#authorization_grants)
   * [Basic authentication](#basic_authentication)
   * [Authorization code](#authorization_code)
@@ -102,13 +103,13 @@ __Arguments__
 
 ```javascript
 bookshelf  {Object} Bookshelf instance
-[config]   {Object} Optional models and tables configuration
+[config]	 {Object} Optional models and tables configuration
 ```
 
 __Return__
 
 ```javascript
-{Object}  Singleton instance
+{Object} Singleton instance
 ```
 
 The configuration object allows you to redefine tables and models names. If you don't specify any configuration, it uses a default object:
@@ -163,11 +164,14 @@ options  {Object} Ideman parameters
 If you don't specify any paramaters, it uses a default object:
 ```javascript
 {
+  dialog: {
+    page: 'dialog'
+  },
   oauth2: {
     //Enables authentications strategies
     authentications: ['basic', 'bearer'],
     //Enables authorizations grants
-    grants: ['client_credentials', 'password', 'refresh_token']
+    grants: ['client_credentials', 'password', 'refresh_token', 'authorization_code']
   },
   crypto: {
     //Secret key to cypher/decypher client secret
@@ -203,7 +207,7 @@ Gets the `ideman` initialization object.
 __Return__
 
 ```javascript
-{Object}  Ideman parameters
+{Object} Ideman parameters
 ```
 ---------------------------------------
 
@@ -213,7 +217,7 @@ Gets the `Bookshelf` instance.
 __Return__
 
 ```javascript
-{Object}  Bookshelf instance
+{Object} Bookshelf instance
 ```
 ---------------------------------------
 
@@ -223,7 +227,7 @@ Gets the `passport` instance.
 __Return__
 
 ```javascript
-{Object}  Passport instance
+{Object} Passport instance
 ```
 
 It is useful when you need to initialize `passport` for `Express` without installing it in your application.
@@ -241,13 +245,13 @@ Gets a `Bookshelf` model. Available default models are: `User`, `Client`, `Token
 __Arguments__
 
 ```javascript
-name  {String}  Model name
+name  {String} Model name
 ```
 
 __Return__
 
 ```javascript
-{Object}  Bookshelf model
+{Object} Bookshelf model
 ```
 
 Now you can extend a `Bookshelf` model in your application:
@@ -271,7 +275,7 @@ Gets all `Bookshelf` models.
 __Return__
 
 ```javascript
-{Array}  All bookshelf models
+{Array} All bookshelf models
 ```
 ---------------------------------------
 
@@ -288,7 +292,7 @@ password  {String} Clear password
 __Return__
 
 ```javascript
-{Object}  Returns a promise with bookshelf `User` model
+{Object} Returns a promise with bookshelf `User` model
 ```
 ---------------------------------------
 
@@ -305,7 +309,7 @@ secret  {String} Clear client secret
 __Return__
 
 ```javascript
-{Object}  Returns a promise with bookshelf `Client` model
+{Object} Returns a promise with bookshelf `Client` model
 ```
 ---------------------------------------
 
@@ -323,7 +327,7 @@ token        {String} Bearer token
 __Return__
 
 ```javascript
-{Object}  Returns a promise with referred bookshelf `User` or `Client` model
+{Object} Returns a promise with referred bookshelf `User` or `Client` model
 ```
 ---------------------------------------
 
@@ -343,7 +347,7 @@ password     {String} Clear password
 __Return__
 
 ```javascript
-{Object}  Returns a promise with tokens
+{Object} Returns a promise with tokens
 ```
 
 The returned JSON object is like:
@@ -371,7 +375,7 @@ client       {Object} Bookshelf `Client` model
 __Return__
 
 ```javascript
-{Object}  Returns a promise with tokens
+{Object} Returns a promise with tokens
 ```
 
 The returned JSON object is like:
@@ -398,7 +402,7 @@ refreshToken  {String} Refresh token
 __Return__
 
 ```javascript
-{Object}  Returns a promise with tokens
+{Object} Returns a promise with tokens
 ```
 
 The returned JSON object is like:
@@ -418,7 +422,7 @@ Revokes a token.
 __Arguments__
 
 ```javascript
-token  {String}  Access token
+token  {String} Access token
 ```
 
 __Return__
@@ -430,8 +434,6 @@ __Return__
 ## <a name="middlewares"></a>`Express` middlewares
 * [isAuthenticated](#isauthenticated)
 * [isClientAuthenticated](#isclientauthenticated)
-* [token](#token)
-* [logout](#logout)
 
 ### <a name="isauthenticated"/>isAuthenticated
 This middleware protects your endpoint and checks if request contains basic credentials or a valid bearer token.
@@ -446,6 +448,16 @@ router.route('/protected/resource').post(ideman.isAuthenticated, function() {
   });
 });
 ```
+
+__Request__
+
+```
+# using HTTP Basic Authentication
+$ curl -u userId:userPwd -X GET http://localhost:3000/protected/resource
+
+# using Bearer token
+$ curl -H 'Authorization: Bearer NgvhmoKm9ASMCa3KGLh2yjNPqhIhFLEgPacesMFiIOQPuZ1Mq19Xg' -X POST http://localhost:3000/protected/resource
+```
 ---------------------------------------
 
 ### <a name="isclientauthenticated"/>isClientAuthenticated
@@ -457,7 +469,30 @@ __Example__
 ```javascript
 router.route('/oauth2/token').post(ideman.isClientAuthenticated, ideman.token);
 ```
+
+__Request__
+
+```
+# user credentials grant
+$ curl -H 'Accept: application/x-www-form-urlencoded' -X POST -d 'grant_type=password&client_id=clientId&username=userId&password=userPassword' http://localhost:3000/oauth2/token
+
+# user credentials grant with basic auth
+$ curl -u clientId:clientSecret -H 'Accept: application/x-www-form-urlencoded' -X POST -d 'grant_type=password&username=userId&password=userPassword' http://localhost:3000/oauth2/token
+
+# client credentials grant
+$ curl -H 'Accept: application/x-www-form-urlencoded' -X POST -d 'grant_type=client_credentials&client_id=clientId&client_secret=clientSecret' http://localhost:3000/oauth2/token
+
+# client credentials grant with basic auth
+$ curl -u clientId:clientSecret -H 'Accept: application/x-www-form-urlencoded' -X POST -d 'grant_type=client_credentials' http://localhost:3000/oauth2/token
+
+# refresh token grant
+$ curl -H 'Accept: application/x-www-form-urlencoded' -u clientId:clientSecret -X POST -d 'grant_type=refresh_token&refresh_token=wRv7bQiR8W7mEYTTlHsSXw4HL0DqP2qM12gQTN7XbSq74Z7JkNyUTv3ZeN' http://localhost:3000/oauth2/token
+```
 ---------------------------------------
+
+## <a name="endpoints"></a>`Express` endpoints
+* [token](#token)
+* [logout](#logout)
 
 ### <a name="token"/>token
 This endpoint has been used with [`isClientAuthenticated`](https://github.com/thinkingmik/ideman#isclientauthenticated) middleware and returns an access token.
