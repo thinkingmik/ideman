@@ -174,15 +174,16 @@ If you don't specify any paramaters, it uses a default object:
     //Enables authorizations grants
     grants: ['client_credentials', 'password', 'refresh_token', 'authorization_code']
   },
-	user: {
-		passwordEnc: 'bcrypt' //bcrypt|crypto|none
-	},
+  user: {
+    //Users' password are crypted and compared by the specified mode below
+    passwordEnc: 'bcrypt' //bcrypt|crypto|none
+  },
   crypto: {
-    //Secret key to cypher/decypher client secret
+    //Secret key to cypher/decypher client/user secret
     secretKey: 'o!rDE(Qbrq7u4OV',
-    //Input encoding for client secret before cypher
+    //Input encoding for client/user secret before cypher
     inputEncoding: 'utf8', //utf8|base64|hex
-    //Output encoding for client secret after cypher
+    //Output encoding for client/user secret after cypher
     outputEncoding: 'base64' //utf8|base64|hex
   },
   token: {
