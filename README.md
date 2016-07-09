@@ -40,7 +40,7 @@ Create a new file in your project root like:
 //file: ./ideman.js
 var knex = require('knex')({
   client: 'pg',
-  connection: 'postgres://postgres:postgres@localhost:5432/test?charset=utf-8&ssl=true',
+  connection: 'postgres://postgres:postgres@localhost:5432/ideman?charset=utf-8&ssl=true',
 });
 var Bookshelf = require('bookshelf')(knex);
 var ideman = require('ideman')(Bookshelf);
@@ -174,13 +174,16 @@ If you don't specify any paramaters, it uses a default object:
     //Enables authorizations grants
     grants: ['client_credentials', 'password', 'refresh_token', 'authorization_code']
   },
+	user: {
+		passwordEnc: 'bcrypt' //bcrypt|crypto|none
+	},
   crypto: {
     //Secret key to cypher/decypher client secret
     secretKey: 'o!rDE(Qbrq7u4OV',
     //Input encoding for client secret before cypher
-    inputEncoding: 'utf8',
+    inputEncoding: 'utf8', //utf8|base64|hex
     //Output encoding for client secret after cypher
-    outputEncoding: 'base64'
+    outputEncoding: 'base64' //utf8|base64|hex
   },
   token: {
     //Token life in seconds
