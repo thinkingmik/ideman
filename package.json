@@ -33,14 +33,12 @@
     "bcrypt-nodejs": "0.0.3",
     "bluebird": "^3.3.5",
     "crypto": "0.0.3",
-    "fs": "0.0.2",
     "jsonwebtoken": "^6.2.0",
     "moment": "^2.13.0",
     "oauth2orize": "^1.2.2",
     "passport": "^0.3.2",
     "passport-http": "^0.3.0",
     "passport-http-bearer": "^1.0.1",
-    "passport-oauth2-client-password": "^0.1.2",
-    "path": "^0.12.7"
+    "passport-oauth2-client-password": "^0.1.2"
   }
 }
