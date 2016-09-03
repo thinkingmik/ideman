@@ -31,9 +31,9 @@
   "homepage": "https://github.com/thinkingmik/ideman#readme",
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
-    "bluebird": "^3.3.5",
+    "bluebird": "^3.4.6",
     "crypto": "0.0.3",
-    "jsonwebtoken": "^6.2.0",
+    "jsonwebtoken": "^7.1.9",
     "moment": "^2.13.0",
     "oauth2orize": "^1.2.2",
     "passport": "^0.3.2",
