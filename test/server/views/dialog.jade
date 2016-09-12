@@ -1,0 +1,17 @@
+doctype html
+html
+  head
+    title oauth2
+  body
+    p Hi #{user.get('username')}!
+    p
+      b #{client.get('name')}
+      |  is requesting
+      b full access
+      |  to your account.
+    p Do you approve?
+    form(action='/oauth2/authorize', method='post')
+      input#transaction(name='transaction_id', type='hidden', value='#{transactionID}')
+      div
+        input#allow(type='submit', value='Allow')
+        input#deny(type='submit', value='Deny', name='cancel')
