@@ -169,10 +169,24 @@ If you don't specify any paramaters, it uses a default object:
     page: 'dialog'
   },
   oauth2: {
+    // Use mandatory client secret in the auth request
+    useClientSecret: false,
     //Enables authentications strategies
     authentications: ['basic', 'bearer'],
     //Enables authorizations grants
     grants: ['client_credentials', 'password', 'refresh_token', 'authorization_code']
+  },
+  validation: {
+    // Enables input validation
+    enabled: false,
+    // Regexp for username
+    username: /^[\w\.]{2,100}$/g,
+    // Regexp for password
+    password: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[.)(=,|$@$!%*#?&])[A-Za-z\d.)(=, | $@ $!%*#?&]{8,255}$/g,
+    // Regexp for client name
+    clientId: /^[\w\.]{2,100}$/g,
+    // Regexp for client secret
+    clientSecret: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[.)(=,|$@$!%*#?&])[A-Za-z\d.)(=, | $@ $!%*#?&]{8,255}$/g,
   },
   user: {
     //Users' password are crypted and compared by the specified mode below

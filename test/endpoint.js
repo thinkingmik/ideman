@@ -5,10 +5,10 @@ var expect = chai.expect;
 var supertest = require('supertest');
 var api = supertest('http://localhost:3000');
 
-var username = 'admin';
-var password = 'admin123';
-var clientId = 'acme';
-var clientSecret = 'acme123';
+var username = 'administrator';
+var password = 'Password1.';
+var clientId = 'acme01';
+var clientSecret = 'Password2.';
 
 var tokenEndpoint = '/oauth2/token';
 var logoutEndpoint = '/oauth2/logout';
@@ -182,7 +182,7 @@ describe('Do a user credentials authentication', function() {
       .send({
         grant_type: 'password',
         username: username,
-        password: 'user1234',
+        password: password + '2',
         scope: '*'
       })
       .set('Accept', 'application/x-www-form-urlencoded')
@@ -313,7 +313,7 @@ describe('Do a basic authentication', function() {
   });
   it('should return an unauthorized code', function(done) {
     api.get(resourceEndpoint)
-      .auth(username, 'user1234')
+      .auth(username, 'Password11.')
       .expect(401)
       .end(done);
   });
