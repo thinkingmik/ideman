@@ -169,7 +169,7 @@ If you don't specify any paramaters, it uses a default object:
     page: 'dialog'
   },
   oauth2: {
-    // Use mandatory client secret in the auth request
+    //Use mandatory client secret in the auth request
     useClientSecret: false,
     //Enables authentications strategies
     authentications: ['basic', 'bearer'],
@@ -177,15 +177,15 @@ If you don't specify any paramaters, it uses a default object:
     grants: ['client_credentials', 'password', 'refresh_token', 'authorization_code']
   },
   validation: {
-    // Enables input validation
+    //Enables input validation
     enabled: false,
-    // Regexp for username
+    //Regexp for username
     username: /^[\w\.]{2,100}$/g,
-    // Regexp for password
+    //Regexp for password
     password: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[.)(=,|$@$!%*#?&])[A-Za-z\d.)(=, | $@ $!%*#?&]{8,255}$/g,
-    // Regexp for client name
+    //Regexp for client name
     clientId: /^[\w\.]{2,100}$/g,
-    // Regexp for client secret
+    //Regexp for client secret
     clientSecret: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[.)(=,|$@$!%*#?&])[A-Za-z\d.)(=, | $@ $!%*#?&]{8,255}$/g,
   },
   user: {
@@ -264,7 +264,7 @@ Gets a `Bookshelf` model. Available default models are: `User`, `Client`, `Token
 __Arguments__
 
 ```javascript
-name  {String} Model name
+name  {string} Model name
 ```
 
 __Return__
@@ -304,8 +304,8 @@ Checks if user credentials are valid.
 __Arguments__
 
 ```javascript
-username  {String} Username
-password  {String} Clear password
+username  {string} Username
+password  {string} Clear password
 ```
 
 __Return__
@@ -321,8 +321,8 @@ Checks if client credentials are valid.
 __Arguments__
 
 ```javascript
-name    {String} Client name
-secret  {String} Clear client secret
+name    {string} Client name
+secret  {string} Clear client secret
 ```
 
 __Return__
@@ -338,9 +338,9 @@ Checks if token is valid.
 __Arguments__
 
 ```javascript
-token        {String} Bearer token
-[ip]         {String} Optional IP address to check
-[userAgent]  {String} Optional user agent to check
+token        {string} Bearer token
+[ip]         {string} Optional IP address to check
+[userAgent]  {string} Optional user agent to check
 ```
 
 __Return__
@@ -357,10 +357,10 @@ __Arguments__
 
 ```javascript
 client       {Object} Bookshelf `Client` model
-username     {String} Username
-password     {String} Clear password
-[ip]         {String} Optional IP address to save with token
-[userAgent]  {String} Optional user agent to save with token
+username     {string} Username
+password     {string} Clear password
+[ip]         {string} Optional IP address to save with token
+[userAgent]  {string} Optional user agent to save with token
 ```
 
 __Return__
@@ -387,8 +387,8 @@ __Arguments__
 
 ```javascript
 client       {Object} Bookshelf `Client` model
-[ip]         {String} Optional IP address to save with token
-[userAgent]  {String} Optional user agent to save with token
+[ip]         {string} Optional IP address to save with token
+[userAgent]  {string} Optional user agent to save with token
 ```
 
 __Return__
@@ -415,7 +415,7 @@ __Arguments__
 
 ```javascript
 client        {Object} Bookshelf `Client` model
-refreshToken  {String} Refresh token
+refreshToken  {string} Refresh token
 ```
 
 __Return__
@@ -435,19 +435,20 @@ The returned JSON object is like:
 ```
 ---------------------------------------
 
-### <a name="revoketoken"/>revokeToken( token ) : Promise( boolean )
-Revokes a token.
+### <a name="revoketoken"/>revokeToken( token, force ) : Promise( bool )
+Revokes a token. If `force` is specified it removes all active tokens associated to user or client.
 
 __Arguments__
 
 ```javascript
-token  {String} Access token
+token  {string} Access token
+force  {bool}   Removes all tokens
 ```
 
 __Return__
 
 ```javascript
-{boolean} Returns true
+{bool} Returns true
 ```
 
 ## <a name="middlewares"></a>`Express` middlewares

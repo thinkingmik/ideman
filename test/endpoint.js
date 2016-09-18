@@ -15,6 +15,7 @@ var logoutEndpoint = '/oauth2/logout';
 var resourceEndpoint = '/resource';
 var authorizeEndpoint = '/oauth2/authorize';
 var accessToken = '';
+var clientAccessToken = '';
 var refreshToken = '';
 var transactionId = '';
 var code = '';
@@ -58,7 +59,7 @@ describe('Do a client credentials authentication', function() {
         expect(res.body).to.have.property('refresh_token');
         expect(res.body).to.have.property('expires_in');
         expect(res.body).to.have.property('token_type');
-        accessToken = res.body.access_token;
+        clientAccessToken = res.body.access_token;
         refreshToken = res.body.refresh_token;
       })
       .end(done);
@@ -79,14 +80,14 @@ describe('Do a client credentials authentication', function() {
         expect(res.body).to.have.property('refresh_token');
         expect(res.body).to.have.property('expires_in');
         expect(res.body).to.have.property('token_type');
-        accessToken = res.body.access_token;
+        clientAccessToken = res.body.access_token;
         refreshToken = res.body.refresh_token;
       })
       .end(done);
   });
   it('should return a success message', function(done) {
     api.get(resourceEndpoint)
-      .set('Authorization', 'bearer ' + accessToken)
+      .set('Authorization', 'bearer ' + clientAccessToken)
       .expect(200)
       .end(done);
   });
@@ -319,11 +320,33 @@ describe('Do a basic authentication', function() {
   });
 });
 
-// Logout
-describe('Destroy all user\'s token', function() {
+// Clients logout
+describe('Do a client logout (with force)', function() {
+  it('should return a success message', function(done) {
+    api.post(logoutEndpoint)
+      .set('Authorization', 'bearer ' + clientAccessToken)
+      .send({
+        force: true
+      })
+      .expect(200)
+      .end(done);
+  });
+  it('should return an invalid access token error', function(done) {
+    api.post(logoutEndpoint)
+      .set('Authorization', 'bearer fake')
+      .expect(401)
+      .end(done);
+  });
+});
+
+// Users logout
+describe('Do a user logout (with force)', function() {
   it('should return a success message', function(done) {
     api.post(logoutEndpoint)
       .set('Authorization', 'bearer ' + accessToken)
+      .send({
+        force: true
+      })
       .expect(200)
       .end(done);
   });
