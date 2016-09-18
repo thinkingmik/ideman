@@ -205,6 +205,8 @@ If you don't specify any paramaters, it uses a default object:
     life: 3600,
     //Token length in bytes
     length: 32, //bytes
+    //Delete active tokens on login
+    autoRemove: true,
     jwt: {
       //Enables jwt token instead the standard token
       enabled: false,
