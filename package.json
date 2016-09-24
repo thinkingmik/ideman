@@ -4,7 +4,6 @@
   "description": "Node module for users authentication management",
   "main": "./lib/ideman.js",
   "scripts": {
-    "test": "node ./test/endpoint.js",
     "start": "node ./lib/ideman.js"
   },
   "repository": {

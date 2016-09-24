@@ -152,13 +152,18 @@ The configuration object allows you to redefine tables and models names. If you 
 * [exchangeClientCredentials](#exchangeclientcredentials)
 * [exchangeRefreshToken](#exchangerefreshtoken)
 * [revokeToken](#revoketoken)
+* [cypher](#cypher)
+* [decypher](#decypher)
+* [crypt](#crypt)
+* [compare](#compare)
+* [verify](#verify)
 
 ### <a name="initialize"/>init( options ) : void
 Initialization of singleton instance.
 
 __Arguments__
 
-```javascript
+```code
 options  {Object} Ideman parameters
 ```
 
@@ -227,7 +232,7 @@ Gets the `ideman` initialization object.
 
 __Return__
 
-```javascript
+```code
 {Object} Ideman parameters
 ```
 ---------------------------------------
@@ -237,7 +242,7 @@ Gets the `Bookshelf` instance.
 
 __Return__
 
-```javascript
+```code
 {Object} Bookshelf instance
 ```
 ---------------------------------------
@@ -247,7 +252,7 @@ Gets the `passport` instance.
 
 __Return__
 
-```javascript
+```code
 {Object} Passport instance
 ```
 
@@ -265,13 +270,13 @@ Gets a `Bookshelf` model. Available default models are: `User`, `Client`, `Token
 
 __Arguments__
 
-```javascript
+```code
 name  {string} Model name
 ```
 
 __Return__
 
-```javascript
+```code
 {Object} Bookshelf model
 ```
 
@@ -295,7 +300,7 @@ Gets all `Bookshelf` models.
 
 __Return__
 
-```javascript
+```code
 {Array} All bookshelf models
 ```
 ---------------------------------------
@@ -305,14 +310,14 @@ Checks if user credentials are valid.
 
 __Arguments__
 
-```javascript
+```code
 username  {string} Username
 password  {string} Clear password
 ```
 
 __Return__
 
-```javascript
+```code
 {Object} Returns a promise with bookshelf `User` model
 ```
 ---------------------------------------
@@ -322,14 +327,14 @@ Checks if client credentials are valid.
 
 __Arguments__
 
-```javascript
+```code
 name    {string} Client name
 secret  {string} Clear client secret
 ```
 
 __Return__
 
-```javascript
+```code
 {Object} Returns a promise with bookshelf `Client` model
 ```
 ---------------------------------------
@@ -339,7 +344,7 @@ Checks if token is valid.
 
 __Arguments__
 
-```javascript
+```code
 token        {string} Bearer token
 [ip]         {string} Optional IP address to check
 [userAgent]  {string} Optional user agent to check
@@ -347,7 +352,7 @@ token        {string} Bearer token
 
 __Return__
 
-```javascript
+```code
 {Object} Returns a promise with referred bookshelf `User` or `Client` model
 ```
 ---------------------------------------
@@ -357,7 +362,7 @@ Exchanges user's credentials for an access token. The client input object must b
 
 __Arguments__
 
-```javascript
+```code
 client       {Object} Bookshelf `Client` model
 username     {string} Username
 password     {string} Clear password
@@ -367,7 +372,7 @@ password     {string} Clear password
 
 __Return__
 
-```javascript
+```code
 {Object} Returns a promise with tokens
 ```
 
@@ -387,7 +392,7 @@ Exchanges client's credentials for an access token. The client input object must
 
 __Arguments__
 
-```javascript
+```code
 client       {Object} Bookshelf `Client` model
 [ip]         {string} Optional IP address to save with token
 [userAgent]  {string} Optional user agent to save with token
@@ -395,7 +400,7 @@ client       {Object} Bookshelf `Client` model
 
 __Return__
 
-```javascript
+```code
 {Object} Returns a promise with tokens
 ```
 
@@ -415,14 +420,14 @@ Exchanges a refesh token for a new access token. The client input object must be
 
 __Arguments__
 
-```javascript
+```code
 client        {Object} Bookshelf `Client` model
 refreshToken  {string} Refresh token
 ```
 
 __Return__
 
-```javascript
+```code
 {Object} Returns a promise with tokens
 ```
 
@@ -442,15 +447,125 @@ Revokes a token. If `force` is specified it removes all active tokens associated
 
 __Arguments__
 
-```javascript
+```code
 token  {string} Access token
 force  {bool}   Removes all tokens
 ```
 
 __Return__
 
-```javascript
+```code
 {bool} Returns true
+```
+---------------------------------------
+
+### <a name="cypher"/>cypher( text ) : Promise( string )
+Cypher a text with crypto. The operation is reversible.
+
+__Arguments__
+
+```code
+text  {string} Text to cypher
+```
+
+__Return__
+
+```code
+{string} Returns the cyphered text
+```
+
+__Throws__
+
+```code
+{CypherHashError}
+```
+---------------------------------------
+
+### <a name="cypher"/>decypher( text ) : Promise( string )
+Decypher a cyphered text with crypto.
+
+__Arguments__
+
+```code
+text  {string} Text to decypher
+```
+
+__Return__
+
+```code
+{string} Returns the decyphered text
+```
+
+__Throws__
+
+```code
+{CypherHashError}
+```
+---------------------------------------
+
+### <a name="cypher"/>crypt( text ) : Promise( string )
+Crypt a text with bcrypt. The operation is not reversible.
+
+__Arguments__
+
+```code
+text  {string} Text to crypt
+```
+
+__Return__
+
+```code
+{string} Returns the crypted text
+```
+
+__Throws__
+```code
+{CryptHashError}
+```
+---------------------------------------
+
+### <a name="compare"/>compare( text, cyphered, force ) : Promise( bool )
+Check if the clear text matches with the cyphered text. If force is specified it accepts two cyphered strings to compare. Use this method only with cyphered text.
+
+__Arguments__
+
+```code
+text      {string}  Text to compare with cyphered
+cyphered  {string}  Cyphered text
+force     {bool}    Force the compare
+```
+
+__Return__
+
+```code
+{bool} Returns the result of the match
+```
+
+__Throws__
+```code
+{CypherHashError}
+```
+---------------------------------------
+
+### <a name="verify"/>verify( text, crypted ) : Promise( bool )
+Check if the clear text matches with the crypted text. Use this method only with crypted text.
+
+__Arguments__
+
+```code
+text     {string}  Text to compare with cyphered
+crypted  {string}  Crypted text
+```
+
+__Return__
+
+```code
+{bool} Returns the result of the match
+```
+
+__Throws__
+```code
+{CryptHashError}
 ```
 
 ## <a name="middlewares"></a>`Express` middlewares
