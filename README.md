@@ -170,9 +170,6 @@ options  {Object} Ideman parameters
 If you don't specify any paramaters, it uses a default object:
 ```javascript
 {
-  dialog: {
-    page: 'dialog'
-  },
   oauth2: {
     //Use mandatory client secret in the auth request
     useClientSecret: false,
