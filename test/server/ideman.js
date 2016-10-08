@@ -5,6 +5,10 @@ var knex = require('knex')({
 var Bookshelf = require('bookshelf')(knex);
 var ideman = require('../../')(Bookshelf);
 
-ideman.init();
+ideman.init({
+  token: {
+    autoRemove: true
+  }
+});
 
 module.exports = ideman;

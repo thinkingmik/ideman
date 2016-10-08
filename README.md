@@ -9,6 +9,9 @@ Implement OAuth2.0 and basic authentication cleanly into your NodeJS server appl
 * [Documentation](#documentation)
   * [Construction](#construction)
   * [Methods](#methods)
+    * [Core](#initialize)
+    * [Authorization](#validateusercredentials)
+    * [Cryptography](#cypher)
   * [Express middlewares](#middlewares)
   * [Express endpoints](#endpoints)
 * [About authorizations](#authorization_grants)
@@ -103,11 +106,11 @@ The `ideman` module is initialized by injecting an initialized `Bookshelf` insta
 __Arguments__
 
 ```javascript
-bookshelf  {Object} Bookshelf instance
-[config]	 {Object} Optional models and tables configuration
+bookshelf   {Object} Bookshelf instance
+[config]    {Object} Optional models and tables configuration
 ```
 
-__Return__
+__Returns__
 
 ```javascript
 {Object} Singleton instance
@@ -139,24 +142,27 @@ The configuration object allows you to redefine tables and models names. If you 
 ```
 
 ## <a name="methods"></a>Methods
-* [init](#initialize)
-* [getConfig](#getconfig)
-* [getBookshelf](#getbookshelf)
-* [getPassport](#getpassport)
-* [getModel](#getmodel)
-* [getModels](#getmodels)
-* [validateUserCredentials](#validateusercredentials)
-* [validateClientCredentials](#validateclientcredentials)
-* [validateBearerToken](#validatebearertoken)
-* [exchangePassword](#exchangepassword)
-* [exchangeClientCredentials](#exchangeclientcredentials)
-* [exchangeRefreshToken](#exchangerefreshtoken)
-* [revokeToken](#revoketoken)
-* [cypher](#cypher)
-* [decypher](#decypher)
-* [crypt](#crypt)
-* [compare](#compare)
-* [verify](#verify)
+* Core
+  * [init](#initialize)
+  * [getConfig](#getconfig)
+  * [getBookshelf](#getbookshelf)
+  * [getPassport](#getpassport)
+  * [getModel](#getmodel)
+  * [getModels](#getmodels)
+* Authorization
+  * [validateUserCredentials](#validateusercredentials)
+  * [validateClientCredentials](#validateclientcredentials)
+  * [validateBearerToken](#validatebearertoken)
+  * [exchangePassword](#exchangepassword)
+  * [exchangeClientCredentials](#exchangeclientcredentials)
+  * [exchangeRefreshToken](#exchangerefreshtoken)
+  * [revokeToken](#revoketoken)
+* Cryptography
+  * [cypher](#cypher)
+  * [decypher](#decypher)
+  * [crypt](#crypt)
+  * [compare](#compare)
+  * [verify](#verify)
 
 ### <a name="initialize"/>init( options ) : void
 Initialization of singleton instance.
@@ -227,7 +233,7 @@ If you don't specify any paramaters, it uses a default object:
 ### <a name="getconfig"/>getConfig() : Object
 Gets the `ideman` initialization object.
 
-__Return__
+__Returns__
 
 ```code
 {Object} Ideman parameters
@@ -237,7 +243,7 @@ __Return__
 ### <a name="getbookshelf"/>getBookshelf() : Object
 Gets the `Bookshelf` instance.
 
-__Return__
+__Returns__
 
 ```code
 {Object} Bookshelf instance
@@ -247,7 +253,7 @@ __Return__
 ### <a name="getpassport"/>getPassport() : Object
 Gets the `passport` instance.
 
-__Return__
+__Returns__
 
 ```code
 {Object} Passport instance
@@ -271,7 +277,7 @@ __Arguments__
 name  {string} Model name
 ```
 
-__Return__
+__Returns__
 
 ```code
 {Object} Bookshelf model
@@ -295,7 +301,7 @@ console.log(UserExt.forge().tableName);
 ### <a name="getmodels"/>getModels() : Array
 Gets all `Bookshelf` models.
 
-__Return__
+__Returns__
 
 ```code
 {Array} All bookshelf models
@@ -312,7 +318,7 @@ username  {string} Username
 password  {string} Clear password
 ```
 
-__Return__
+__Returns__
 
 ```code
 {Object} Returns a promise with bookshelf `User` model
@@ -329,7 +335,7 @@ name    {string} Client name
 secret  {string} Clear client secret
 ```
 
-__Return__
+__Returns__
 
 ```code
 {Object} Returns a promise with bookshelf `Client` model
@@ -347,7 +353,7 @@ token        {string} Bearer token
 [userAgent]  {string} Optional user agent to check
 ```
 
-__Return__
+__Returns__
 
 ```code
 {Object} Returns a promise with referred bookshelf `User` or `Client` model
@@ -355,7 +361,7 @@ __Return__
 ---------------------------------------
 
 ### <a name="exchangepassword"/>exchangePassword( client, username, password [, ip, userAgent] ) : Promise( Object )
-Exchanges user's credentials for an access token. The client input object must be an existing entity into database.
+Exchanges user's credentials for an access token. The client input object must be an existing entity into database.  
 
 __Arguments__
 
@@ -367,10 +373,18 @@ password     {string} Clear password
 [userAgent]  {string} Optional user agent to save with token
 ```
 
-__Return__
+__Returns__
 
 ```code
 {Object} Returns a promise with tokens
+```
+
+Example of a common scenario:
+```javascript
+var promise = ideman.validateClientCredentials('name', 'secret')
+.then(function(client) {
+  return ideman.exchangePassword(client, 'username', 'password');
+});
 ```
 
 The returned JSON object is like:
@@ -395,7 +409,7 @@ client       {Object} Bookshelf `Client` model
 [userAgent]  {string} Optional user agent to save with token
 ```
 
-__Return__
+__Returns__
 
 ```code
 {Object} Returns a promise with tokens
@@ -422,7 +436,7 @@ client        {Object} Bookshelf `Client` model
 refreshToken  {string} Refresh token
 ```
 
-__Return__
+__Returns__
 
 ```code
 {Object} Returns a promise with tokens
@@ -449,7 +463,7 @@ token  {string} Access token
 force  {bool}   Removes all tokens
 ```
 
-__Return__
+__Returns__
 
 ```code
 {bool} Returns true
@@ -465,7 +479,7 @@ __Arguments__
 text  {string} Text to cypher
 ```
 
-__Return__
+__Returns__
 
 ```code
 {string} Returns the cyphered text
@@ -487,7 +501,7 @@ __Arguments__
 text  {string} Text to decypher
 ```
 
-__Return__
+__Returns__
 
 ```code
 {string} Returns the decyphered text
@@ -509,7 +523,7 @@ __Arguments__
 text  {string} Text to crypt
 ```
 
-__Return__
+__Returns__
 
 ```code
 {string} Returns the crypted text
@@ -532,7 +546,7 @@ cyphered  {string}  Cyphered text
 force     {bool}    Force the compare
 ```
 
-__Return__
+__Returns__
 
 ```code
 {bool} Returns the result of the match
@@ -554,7 +568,7 @@ text     {string}  Text to compare with cyphered
 crypted  {string}  Crypted text
 ```
 
-__Return__
+__Returns__
 
 ```code
 {bool} Returns the result of the match

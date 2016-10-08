@@ -134,3 +134,13 @@ describe('Call exchange password method', function() {
     });
   });
 });
+
+// Revoke method
+describe('Call revoke token method', function() {
+  it('should return a success message', function() {
+    return ideman.revokeToken(accessToken)
+    .then(function(res) {
+      expect(res).to.be.equal(true);
+    });
+  });
+});
