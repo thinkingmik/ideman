@@ -11,7 +11,7 @@ Implement OAuth2.0 and basic authentication cleanly into your NodeJS server appl
   * [Methods](#methods)
     * [Core](#initialize)
     * [Authorization](#validateusercredentials)
-    * [Cryptography](#cypher)
+    * [Cryptography](#cipher)
   * [Express middlewares](#middlewares)
   * [Express endpoints](#endpoints)
 * [About authorizations](#authorization_grants)
@@ -158,8 +158,8 @@ The configuration object allows you to redefine tables and models names. If you 
   * [exchangeRefreshToken](#exchangerefreshtoken)
   * [revokeToken](#revoketoken)
 * Cryptography
-  * [cypher](#cypher)
-  * [decypher](#decypher)
+  * [cipher](#cipher)
+  * [decipher](#decipher)
   * [crypt](#crypt)
   * [compare](#compare)
   * [verify](#verify)
@@ -201,11 +201,13 @@ If you don't specify any paramaters, it uses a default object:
     passwordEnc: 'bcrypt' //bcrypt|crypto|none
   },
   crypto: {
-    //Secret key to cypher/decypher client/user secret
+    //Secret key to cipher/decipher client/user secret
     secretKey: 'o!rDE(Qbrq7u4OV',
-    //Input encoding for client/user secret before cypher
+    //Cipher algorithm
+    algorithm: 'AES-256-CBC',
+    //Input encoding for client/user secret before cipher
     inputEncoding: 'utf8', //utf8|base64|hex
-    //Output encoding for client/user secret after cypher
+    //Output encoding for client/user secret after cipher
     outputEncoding: 'base64' //utf8|base64|hex
   },
   token: {
@@ -470,51 +472,51 @@ __Returns__
 ```
 ---------------------------------------
 
-### <a name="cypher"/>cypher( text ) : Promise( string )
-Cypher a text with crypto. The operation is reversible.
+### <a name="cipher"/>cipher( text ) : Promise( string )
+Cipher a text with crypto. The operation is reversible.
 
 __Arguments__
 
 ```code
-text  {string} Text to cypher
+text  {string} Text to cipher
 ```
 
 __Returns__
 
 ```code
-{string} Returns the cyphered text
+{string} Returns the ciphered text
 ```
 
 __Throws__
 
 ```code
-{CypherHashError}
+{CipherHashError}
 ```
 ---------------------------------------
 
-### <a name="cypher"/>decypher( text ) : Promise( string )
-Decypher a cyphered text with crypto.
+### <a name="cipher"/>decipher( text ) : Promise( string )
+Decipher a ciphered text with crypto.
 
 __Arguments__
 
 ```code
-text  {string} Text to decypher
+text  {string} Text to decipher
 ```
 
 __Returns__
 
 ```code
-{string} Returns the decyphered text
+{string} Returns the deciphered text
 ```
 
 __Throws__
 
 ```code
-{CypherHashError}
+{CipherHashError}
 ```
 ---------------------------------------
 
-### <a name="cypher"/>crypt( text ) : Promise( string )
+### <a name="cipher"/>crypt( text ) : Promise( string )
 Crypt a text with bcrypt. The operation is not reversible.
 
 __Arguments__
@@ -535,14 +537,14 @@ __Throws__
 ```
 ---------------------------------------
 
-### <a name="compare"/>compare( text, cyphered, force ) : Promise( bool )
-Check if the clear text matches with the cyphered text. If force is specified it accepts two cyphered strings to compare. Use this method only with cyphered text.
+### <a name="compare"/>compare( text, ciphered, force ) : Promise( bool )
+Check if the clear text matches with the ciphered text. If force is specified it accepts two ciphered strings to compare. Use this method only with ciphered text.
 
 __Arguments__
 
 ```code
-text      {string}  Text to compare with cyphered
-cyphered  {string}  Cyphered text
+text      {string}  Text to compare with ciphered
+ciphered  {string}  Ciphered text
 force     {bool}    Force the compare
 ```
 
@@ -554,7 +556,7 @@ __Returns__
 
 __Throws__
 ```code
-{CypherHashError}
+{CipherHashError}
 ```
 ---------------------------------------
 
@@ -564,7 +566,7 @@ Check if the clear text matches with the crypted text. Use this method only with
 __Arguments__
 
 ```code
-text     {string}  Text to compare with cyphered
+text     {string}  Text to compare with ciphered
 crypted  {string}  Crypted text
 ```
 

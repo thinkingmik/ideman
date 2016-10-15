@@ -17,38 +17,38 @@ var accessToken = '';
 var clientAccessToken = '';
 var refreshToken = '';
 var text = 'example';
-var cyphered = null;
+var ciphered = null;
 var crypted = null;
 
-// Cypher method
-describe('Call cypher method', function() {
-  it('should return a cyphered text', function() {
-    return ideman.cypher(text)
+// Cipher method
+describe('Call cipher method', function() {
+  it('should return a ciphered text', function() {
+    return ideman.cipher(text)
     .then(function(res) {
-      cyphered = res;
+      ciphered = res;
       expect(res).to.exist;
     });
   });
-  it('should return a CypherHashError exception', function() {
-    return ideman.cypher(null)
+  it('should return a CipherHashError exception', function() {
+    return ideman.cipher(null)
     .catch(function(err) {
-      expect(err.name).to.be.equal('CypherHashError');
+      expect(err.name).to.be.equal('CipherHashError');
     });
   });
 });
 
-// Decypher method
-describe('Call decypher method', function() {
-  it('should return a decyphered text', function() {
-    return ideman.decypher(cyphered)
+// Decipher method
+describe('Call decipher method', function() {
+  it('should return a deciphered text', function() {
+    return ideman.decipher(ciphered)
     .then(function(res) {
       expect(res).to.be.equal(text);
     });
   });
-  it('should return a CypherHashError exception', function() {
-    return ideman.decypher(null)
+  it('should return a CipherHashError exception', function() {
+    return ideman.decipher(null)
     .catch(function(err) {
-      expect(err.name).to.be.equal('CypherHashError');
+      expect(err.name).to.be.equal('CipherHashError');
     });
   });
 });
@@ -56,21 +56,21 @@ describe('Call decypher method', function() {
 // Compare method
 describe('Call compare method', function() {
   it('should return a true value', function() {
-    return ideman.compare(text, cyphered)
+    return ideman.compare(text, ciphered)
     .then(function(res) {
       expect(res).to.be.equal(true);
     });
   });
   it('should return a false value', function() {
-    return ideman.compare('fake', cyphered)
+    return ideman.compare('fake', ciphered)
     .then(function(res) {
       expect(res).to.be.equal(false);
     });
   });
-  it('should return a CypherHashError exception', function() {
-    return ideman.compare(null, cyphered)
+  it('should return a CipherHashError exception', function() {
+    return ideman.compare(null, ciphered)
     .catch(function(err) {
-      expect(err.name).to.be.equal('CypherHashError');
+      expect(err.name).to.be.equal('CipherHashError');
     });
   });
 });
@@ -107,7 +107,7 @@ describe('Call verify method', function() {
     });
   });
   it('should return a CryptHashError exception', function() {
-    return ideman.verify(null, cyphered)
+    return ideman.verify(null, ciphered)
     .catch(function(err) {
       expect(err.name).to.be.equal('CryptHashError');
     });
