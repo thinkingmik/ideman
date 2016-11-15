@@ -8,9 +8,6 @@ var ideman = require('../../')(Bookshelf);
 ideman.init({
   token: {
     autoRemove: true
-  },
-  validation: {
-    enabled: false
   }
 });
 

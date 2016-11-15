@@ -145,6 +145,7 @@ The configuration object allows you to redefine tables and models names. If you 
 * Core
   * [init](#initialize)
   * [getConfig](#getconfig)
+  * [getDbConfig](#getdbconfig)
   * [getBookshelf](#getbookshelf)
   * [getPassport](#getpassport)
   * [getModel](#getmodel)
@@ -239,6 +240,16 @@ __Returns__
 
 ```code
 {Object} Ideman parameters
+```
+---------------------------------------
+
+### <a name="getdbconfig"/>getDbConfig() : Object
+Gets the `ideman` database configuration object.
+
+__Returns__
+
+```code
+{Object} Ideman db config
 ```
 ---------------------------------------
 

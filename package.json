@@ -33,15 +33,16 @@
     "bluebird": "^3.4.6",
     "crypto": "0.0.3",
     "jsonwebtoken": "^7.1.9",
-    "lodash": "^4.16.4",
+    "lodash": "^4.17.1",
     "mocha": "^3.1.2",
-    "moment": "^2.15.1",
-    "oauth2orize": "^1.2.2",
+    "moment": "^2.16.0",
+    "oauth2orize": "^1.5.1",
     "passport": "^0.3.2",
     "passport-http": "^0.3.0",
     "passport-http-bearer": "^1.0.1",
     "passport-oauth2-client-password": "^0.1.2",
-    "validator": "^6.0.0"
+    "supertest": "^2.0.1",
+    "validator": "^6.1.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
