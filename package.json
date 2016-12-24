@@ -1,6 +1,6 @@
 {
   "name": "ideman",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Node module for users authentication management",
   "main": "./lib/ideman.js",
   "scripts": {
