@@ -13,7 +13,7 @@ router.route('/oauth2/logout')
   .post(ideman.isAuthenticated, ideman.logout);
 
 router.route('/resource').get(ideman.isAuthenticated, function(req, res) {
-  res.json(true);
+  res.json(ideman.getConfig());
 });
 
 module.exports = router;

@@ -1,6 +1,6 @@
 {
   "name": "ideman",
-  "version": "2.0.1",
+  "version": "3.0.0",
   "description": "Node module for users authentication management",
   "main": "./lib/ideman.js",
   "scripts": {
@@ -17,6 +17,7 @@
     "token",
     "restful",
     "authentication",
+    "ldap",
     "api",
     "express",
     "passport",
@@ -29,25 +30,25 @@
   },
   "homepage": "https://github.com/thinkingmik/ideman#readme",
   "dependencies": {
-    "bcrypt-nodejs": "0.0.3",
+    "bcrypt-nodejs": "^0.0.3",
     "bluebird": "^3.4.6",
-    "crypto": "0.0.3",
+    "crypto": "^0.0.3",
     "jsonwebtoken": "^7.1.9",
+    "ldapjs": "^1.0.1",
     "lodash": "^4.17.1",
-    "mocha": "^3.1.2",
     "moment": "^2.16.0",
-    "oauth2orize": "^1.5.1",
+    "oauth2orize": "^1.8.0",
     "passport": "^0.3.2",
     "passport-http": "^0.3.0",
     "passport-http-bearer": "^1.0.1",
     "passport-oauth2-client-password": "^0.1.2",
-    "supertest": "^2.0.1",
-    "validator": "^6.1.0"
+    "util": "^0.10.3",
+    "validator": "^7.0.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
     "cheerio": "^0.22.0",
     "mocha": "^3.0.2",
-    "supertest": "^2.0.0"
+    "supertest": "^3.0.0"
   }
 }

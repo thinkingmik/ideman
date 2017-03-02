@@ -1,9 +1,11 @@
-Identity Manager
+Identity Manager 3
 ================
 Implement OAuth2.0 and basic authentication cleanly into your NodeJS server application using [`Bookshelf`](http://bookshelfjs.org/) and [`knex`](http://knexjs.org/) as ORM and queries builder.
 
 # Summary
-* [Setup](#setup)
+* [Database](#database)
+  * [Tables](#tables)
+  * [Diagram](#diagram)
 * [Installation](#install)
 * [Example](#usage)
 * [Documentation](#documentation)
@@ -23,9 +25,12 @@ Implement OAuth2.0 and basic authentication cleanly into your NodeJS server appl
 * [Credits](#credits)
 * [License](#license)
 
-# <a name="setup"></a>Setup
+# <a name="database"></a>Database
 This module requires a database infrastructure. To automate the creation of schemas and others boring jobs, `ideman` provides a node command line interface tool called [`ideman-cli`](https://github.com/thinkingmik/ideman-cli).
 So, before continue with the installation of this module, go to [`ideman-cli`](https://github.com/thinkingmik/ideman-cli) project and then install `ideman`.
+
+## <a name="tables"></a>Tables
+## <a name="diagram"></a>Diagram
 
 # <a name="install"></a>Installation
 **WARNING**:
