@@ -1,8 +1,6 @@
 var knex = require('knex')({
-  client: 'sqlite3',
-  connection: {
-    filename: "C:\\Temp\\ideman_tst.sqlite3"
-  },
+  client: 'pg',
+  connection: 'postgres://postgres:postgres@pandora.net/ideman?charset=utf-8',
 	useNullAsDefault: true
 });
 var Bookshelf = require('bookshelf')(knex);

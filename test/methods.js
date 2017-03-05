@@ -7,8 +7,8 @@ var Promise = require('bluebird');
 
 var username = 'administrator';
 var password = 'Password1.';
-var clientId = 'acme01';
-var clientSecret = 'Password2.';
+var clientId = 'acme';
+var clientSecret = 'Password1.';
 var Client = ideman.getModel('Client').forge({
   name: clientId,
   secret: clientSecret

@@ -7,8 +7,8 @@ var api = supertest('http://localhost:3000');
 
 var username = 'administrator';
 var password = 'Password1.';
-var clientId = 'acme01';
-var clientSecret = 'Password2.';
+var clientId = 'acme';
+var clientSecret = 'Password1.';
 
 var tokenEndpoint = '/oauth2/token';
 var logoutEndpoint = '/oauth2/logout';
