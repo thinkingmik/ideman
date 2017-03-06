@@ -6,19 +6,20 @@ var ideman = require('./server/ideman');
 var Promise = require('bluebird');
 
 var username = 'm.andreoli';
-var password = '';
+var password = '7927MAD4ma%';
 var fakePassword = 'asd';
 var ldapOptions = {
   ldap: {
     enabled: true,
-    domainControllers: ['127.0.0.1'],
+    domainControllers: ['127.0.0.1', '172.30.1.11:389'],
     searchScope: 'ou=FD-USERS,dc=fabbricadigitale,dc=local',
     authAttributes: ['sAMAccountName'],
+    returnAttribute: 'sAMAccountName',
     root: {
       dn: 'cn=USR_Michele Andreoli,ou=FD-USERS,dc=fabbricadigitale,dc=local',
       password: {
         crypto: true,
-        value: ''
+        value: 'HmAwwHCna8Tc6KqJ3U+dZA=='
       }
     }
   }
@@ -29,11 +30,12 @@ var wrongConnectionLdapOptions = {
     domainControllers: ['127.0.0.1'],
     searchScope: 'ou=FD-USERS,dc=fabbricadigitale,dc=local',
     authAttributes: ['sAMAccountName'],
+    returnAttribute: 'sAMAccountName',
     root: {
       dn: 'cn=USR_Michele Andreoli,ou=FD-USERS,dc=fabbricadigitale,dc=local',
       password: {
         crypto: true,
-        value: ''
+        value: 'HmAwwHCna8Tc6KqJ3U+dZA=='
       }
     }
   }
@@ -41,14 +43,15 @@ var wrongConnectionLdapOptions = {
 var wrongBindLdapOptions = {
   ldap: {
     enabled: true,
-    domainControllers: ['127.0.0.1'],
+    domainControllers: ['172.30.1.11:389'],
     searchScope: 'ou=FD-USERS,dc=fabbricadigitale,dc=local',
     authAttributes: ['sAMAccountName'],
+    returnAttribute: 'sAMAccountName',
     root: {
       dn: 'cn=USR_XXX,ou=FD-USERS,dc=fabbricadigitale,dc=local',
       password: {
         crypto: true,
-        value: ''
+        value: 'HmAwwHCna8Tc6KqJ3U+dZA=='
       }
     }
   }
@@ -56,14 +59,31 @@ var wrongBindLdapOptions = {
 var wrongSearchLdapOptions = {
   ldap: {
     enabled: true,
-    domainControllers: ['127.0.0.1'],
-    searchScope: 'ou=xxx_FD-USERS,dc=fabbricadigitale,dc=local',
+    domainControllers: ['172.30.1.11:389'],
+    searchScope: 'ou=xxx,dc=fabbricadigitale,dc=local',
     authAttributes: ['sAMAccountName'],
+    returnAttribute: 'sAMAccountName',
     root: {
       dn: 'cn=USR_Michele Andreoli,ou=FD-USERS,dc=fabbricadigitale,dc=local',
       password: {
         crypto: true,
-        value: ''
+        value: 'HmAwwHCna8Tc6KqJ3U+dZA=='
+      }
+    }
+  }
+};
+var wrongSearchFilterLdapOptions = {
+  ldap: {
+    enabled: true,
+    domainControllers: ['172.30.1.11:389'],
+    searchScope: 'ou=FD-USERS,dc=fabbricadigitale,dc=local',
+    authAttributes: ['cn'],
+    returnAttribute: 'sAMAccountName',
+    root: {
+      dn: 'cn=USR_Michele Andreoli,ou=FD-USERS,dc=fabbricadigitale,dc=local',
+      password: {
+        crypto: true,
+        value: 'HmAwwHCna8Tc6KqJ3U+dZA=='
       }
     }
   }
@@ -71,7 +91,7 @@ var wrongSearchLdapOptions = {
 
 // Cipher method
 describe('Authenticate through LDAP', function() {
-  this.timeout(10000);
+  this.timeout(5000);
   it('should return a connection error', function() {
     ideman.init(wrongConnectionLdapOptions);
     return ideman.ldapAuthentication(username, password)
@@ -93,18 +113,25 @@ describe('Authenticate through LDAP', function() {
       expect(err.name).to.be.equal('LDAPSearchError');
     });
   });
+  it('should return false (wrong search filter)', function() {
+    ideman.init(wrongSearchFilterLdapOptions);
+    return ideman.ldapAuthentication(username, password)
+    .then(function(res) {
+      expect(res).to.be.null;
+    });
+  });
   it('should return false', function() {
     ideman.init(ldapOptions);
     return ideman.ldapAuthentication(username, fakePassword)
     .then(function(res) {
-      expect(res).to.be.equal(false);
+      expect(res).to.be.null;
     });
   });
   it('should return true', function() {
     ideman.init(ldapOptions);
     return ideman.ldapAuthentication(username, password)
     .then(function(res) {
-      expect(res).to.be.equal(true);
+      expect(res).to.not.be.null;
     });
   });
 });
