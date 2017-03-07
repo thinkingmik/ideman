@@ -5,21 +5,30 @@ var expect = chai.expect;
 var ideman = require('./server/ideman');
 var Promise = require('bluebird');
 
-var username = '';
-var password = '';
+var username = 'm.andreoli';
+var password = 'Password1.';
 var fakePassword = 'asd';
+var ldapServer = ['192.168.99.101'];
+var fakeLdapServer = ['127.0.0.1'];
+var scope = 'ou=users,dc=acme,dc=com';
+var fakeScope = 'ou=xxx,dc=acme,dc=com';
+var rootDn = 'cn=admin,dc=acme,dc=com';
+var fakeRootDn = 'cn=xxx,dc=acme,dc=com';
+var passwordRoot = 'uV1ju3uY1JerhQ9z/nPr2w==';
+var fakePasswordRoot = '1iuktueqUpn3q9GvT2KaLQ==';
+
 var ldapOptions = {
   ldap: {
     enabled: true,
-    domainControllers: ['127.0.0.1'],
-    searchScope: '',
-    authAttributes: ['sAMAccountName'],
-    returnAttribute: 'sAMAccountName',
+    domainControllers: ldapServer,
+    searchScope: scope,
+    authAttributes: ['cn', 'mail'],
+    returnAttribute: 'mail',
     root: {
-      dn: '',
+      dn: rootDn,
       password: {
         crypto: true,
-        value: ''
+        value: passwordRoot
       }
     }
   }
@@ -27,15 +36,15 @@ var ldapOptions = {
 var wrongConnectionLdapOptions = {
   ldap: {
     enabled: true,
-    domainControllers: ['127.0.0.1'],
-    searchScope: '',
-    authAttributes: ['sAMAccountName'],
-    returnAttribute: 'sAMAccountName',
+    domainControllers: fakeLdapServer,
+    searchScope: scope,
+    authAttributes: ['cn', 'mail'],
+    returnAttribute: 'mail',
     root: {
-      dn: '',
+      dn: rootDn,
       password: {
         crypto: true,
-        value: ''
+        value: passwordRoot
       }
     }
   }
@@ -43,15 +52,15 @@ var wrongConnectionLdapOptions = {
 var wrongBindLdapOptions = {
   ldap: {
     enabled: true,
-    domainControllers: ['127.0.0.1'],
-    searchScope: '',
-    authAttributes: ['sAMAccountName'],
-    returnAttribute: 'sAMAccountName',
+    domainControllers: ldapServer,
+    searchScope: scope,
+    authAttributes: ['cn', 'mail'],
+    returnAttribute: 'mail',
     root: {
-      dn: '',
+      dn: fakeRootDn,
       password: {
         crypto: true,
-        value: ''
+        value: passwordRoot
       }
     }
   }
@@ -59,15 +68,15 @@ var wrongBindLdapOptions = {
 var wrongSearchLdapOptions = {
   ldap: {
     enabled: true,
-    domainControllers: ['127.0.0.1'],
-    searchScope: '',
-    authAttributes: ['sAMAccountName'],
-    returnAttribute: 'sAMAccountName',
+    domainControllers: ldapServer,
+    searchScope: fakeScope,
+    authAttributes: ['cn', 'mail'],
+    returnAttribute: 'mail',
     root: {
-      dn: '',
+      dn: rootDn,
       password: {
         crypto: true,
-        value: ''
+        value: passwordRoot
       }
     }
   }
@@ -75,15 +84,15 @@ var wrongSearchLdapOptions = {
 var wrongSearchFilterLdapOptions = {
   ldap: {
     enabled: true,
-    domainControllers: ['127.0.0.1'],
-    searchScope: '',
-    authAttributes: ['cn'],
-    returnAttribute: 'sAMAccountName',
+    domainControllers: ldapServer,
+    searchScope: scope,
+    authAttributes: ['sn'],
+    returnAttribute: 'mail',
     root: {
-      dn: '',
+      dn: rootDn,
       password: {
         crypto: true,
-        value: ''
+        value: passwordRoot
       }
     }
   }
@@ -113,21 +122,21 @@ describe('Authenticate through LDAP', function() {
       expect(err.name).to.be.equal('LDAPSearchError');
     });
   });
-  it('should return false (wrong search filter)', function() {
+  it('should return null (wrong search filter)', function() {
     ideman.init(wrongSearchFilterLdapOptions);
     return ideman.ldapAuthentication(username, password)
     .then(function(res) {
       expect(res).to.be.null;
     });
   });
-  it('should return false', function() {
+  it('should return null', function() {
     ideman.init(ldapOptions);
     return ideman.ldapAuthentication(username, fakePassword)
     .then(function(res) {
       expect(res).to.be.null;
     });
   });
-  it('should return true', function() {
+  it('should not return null', function() {
     ideman.init(ldapOptions);
     return ideman.ldapAuthentication(username, password)
     .then(function(res) {
