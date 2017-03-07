@@ -21,7 +21,7 @@ ideman.init({
     passwordEnc: 'crypto'
   },
   ldap: {
-    enabled: true,
+    enabled: false,
     domainControllers: ['192.168.99.101'],
     searchScope: 'ou=users,dc=acme,dc=com',
     authAttributes: ['cn', 'mail'],
