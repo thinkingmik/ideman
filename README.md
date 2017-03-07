@@ -163,6 +163,7 @@ The configuration object allows you to redefine tables and models names. If you 
   * [exchangeClientCredentials](#exchangeclientcredentials)
   * [exchangeRefreshToken](#exchangerefreshtoken)
   * [revokeToken](#revoketoken)
+  * [ldapAuthentication](#ldapAuthentication)
 * Cryptography
   * [cipher](#cipher)
   * [decipher](#decipher)
@@ -218,8 +219,8 @@ If you don't specify any paramaters, it uses a default object:
     },
     //List of dc controllers
     domainControllers: [],
-    //LDAP search path
-    searchScope: null, //ou=users,dc=acme,dc=com
+    //LDAP search path, ex. ou=users,dc=acme,dc=com
+    searchScope: null,
     //Search filters, ex. (|(cn=<username>)(mail=<username>))
     authAttributes: ['cn', 'mail'],
     //Returned attribute after search (returned value must match with username column for a successful login)
@@ -512,6 +513,29 @@ __Returns__
 
 ```code
 {bool} Returns true
+```
+---------------------------------------
+
+### <a name="ldapAuthentication"/>ldapAuthentication( username, password ) : Promise( string )
+Checks credentials for the given user on LDAP.
+
+__Arguments__
+
+```code
+username  {string}  Username
+password  {string}  Password
+```
+
+__Returns__
+
+```code
+{string} Returns null if user was not found, otherwise the attribute value specified in configuration
+```
+
+__Throws__
+
+```code
+{LDAPConnectionError|LDAPBindError|LDAPUnbindError|LDAPSearchError}
 ```
 ---------------------------------------
 
@@ -849,8 +873,9 @@ A successful token request will return a standard access token in JSON format:
 - [oauth2orize](https://github.com/jaredhanson/oauth2orize) by Jared Hanson
 - [knex](https://github.com/tgriesser/knex) by Tim Griesser
 - [bookshelf](https://github.com/tgriesser/bookshelf) by Tim Griesser
+- [ldapjs](https://github.com/mcavage/node-ldapjs) by Mark Cavage
 
 # <a name="license"></a>License
 The [MIT License](https://github.com/thinkingmik/ideman/blob/master/LICENSE)
 
-Copyright (c) 2016 Michele Andreoli <http://thinkingmik.com>
+Copyright (c) 2017 Michele Andreoli <http://thinkingmik.com>
