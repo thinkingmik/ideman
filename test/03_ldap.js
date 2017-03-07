@@ -5,21 +5,21 @@ var expect = chai.expect;
 var ideman = require('./server/ideman');
 var Promise = require('bluebird');
 
-var username = 'm.andreoli';
-var password = '7927MAD4ma%';
+var username = '';
+var password = '';
 var fakePassword = 'asd';
 var ldapOptions = {
   ldap: {
     enabled: true,
-    domainControllers: ['127.0.0.1', '172.30.1.11:389'],
-    searchScope: 'ou=FD-USERS,dc=fabbricadigitale,dc=local',
+    domainControllers: ['127.0.0.1'],
+    searchScope: '',
     authAttributes: ['sAMAccountName'],
     returnAttribute: 'sAMAccountName',
     root: {
-      dn: 'cn=USR_Michele Andreoli,ou=FD-USERS,dc=fabbricadigitale,dc=local',
+      dn: '',
       password: {
         crypto: true,
-        value: 'HmAwwHCna8Tc6KqJ3U+dZA=='
+        value: ''
       }
     }
   }
@@ -28,14 +28,14 @@ var wrongConnectionLdapOptions = {
   ldap: {
     enabled: true,
     domainControllers: ['127.0.0.1'],
-    searchScope: 'ou=FD-USERS,dc=fabbricadigitale,dc=local',
+    searchScope: '',
     authAttributes: ['sAMAccountName'],
     returnAttribute: 'sAMAccountName',
     root: {
-      dn: 'cn=USR_Michele Andreoli,ou=FD-USERS,dc=fabbricadigitale,dc=local',
+      dn: '',
       password: {
         crypto: true,
-        value: 'HmAwwHCna8Tc6KqJ3U+dZA=='
+        value: ''
       }
     }
   }
@@ -43,15 +43,15 @@ var wrongConnectionLdapOptions = {
 var wrongBindLdapOptions = {
   ldap: {
     enabled: true,
-    domainControllers: ['172.30.1.11:389'],
-    searchScope: 'ou=FD-USERS,dc=fabbricadigitale,dc=local',
+    domainControllers: ['127.0.0.1'],
+    searchScope: '',
     authAttributes: ['sAMAccountName'],
     returnAttribute: 'sAMAccountName',
     root: {
-      dn: 'cn=USR_XXX,ou=FD-USERS,dc=fabbricadigitale,dc=local',
+      dn: '',
       password: {
         crypto: true,
-        value: 'HmAwwHCna8Tc6KqJ3U+dZA=='
+        value: ''
       }
     }
   }
@@ -59,15 +59,15 @@ var wrongBindLdapOptions = {
 var wrongSearchLdapOptions = {
   ldap: {
     enabled: true,
-    domainControllers: ['172.30.1.11:389'],
-    searchScope: 'ou=xxx,dc=fabbricadigitale,dc=local',
+    domainControllers: ['127.0.0.1'],
+    searchScope: '',
     authAttributes: ['sAMAccountName'],
     returnAttribute: 'sAMAccountName',
     root: {
-      dn: 'cn=USR_Michele Andreoli,ou=FD-USERS,dc=fabbricadigitale,dc=local',
+      dn: '',
       password: {
         crypto: true,
-        value: 'HmAwwHCna8Tc6KqJ3U+dZA=='
+        value: ''
       }
     }
   }
@@ -75,15 +75,15 @@ var wrongSearchLdapOptions = {
 var wrongSearchFilterLdapOptions = {
   ldap: {
     enabled: true,
-    domainControllers: ['172.30.1.11:389'],
-    searchScope: 'ou=FD-USERS,dc=fabbricadigitale,dc=local',
+    domainControllers: ['127.0.0.1'],
+    searchScope: '',
     authAttributes: ['cn'],
     returnAttribute: 'sAMAccountName',
     root: {
-      dn: 'cn=USR_Michele Andreoli,ou=FD-USERS,dc=fabbricadigitale,dc=local',
+      dn: '',
       password: {
         crypto: true,
-        value: 'HmAwwHCna8Tc6KqJ3U+dZA=='
+        value: ''
       }
     }
   }
