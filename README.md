@@ -27,7 +27,7 @@ Implement OAuth2.0 and basic authentication cleanly into your NodeJS server appl
 
 # <a name="database"></a>Database
 This module requires a database infrastructure. To automate the creation of schemas and others boring jobs, `ideman` provides a node command line interface tool called [`ideman-cli`](https://github.com/thinkingmik/ideman-cli).
-So, before continue with the installation of this module, go to [`ideman-cli`](https://github.com/thinkingmik/ideman-cli) project and then install `ideman`.
+So, before continue with the installation of this module, go to [`ideman-cli`](https://github.com/thinkingmik/ideman-cli) project and then install `ideman`. Otherwise you can create manually the database schema following the documentation below.
 
 ## <a name="tables"></a>Tables
 ## <a name="diagram"></a>Diagram
@@ -205,6 +205,33 @@ If you don't specify any paramaters, it uses a default object:
   user: {
     //Users' password are crypted and compared by the specified mode below
     passwordEnc: 'bcrypt' //bcrypt|crypto|none
+  },
+  ldap: {
+    //Enable LDAP user binding
+    enabled: true,
+    //LDAP client options
+    options: {
+      ssl: false,
+      timeout: null,
+      connectTimeout: null,
+      strictdn: false
+    },
+    //List of dc controllers
+    domainControllers: [],
+    //LDAP search path
+    searchScope: null, //ou=users,dc=acme,dc=com
+    //Search filters, ex. (|(cn=<username>)(mail=<username>))
+    authAttributes: ['cn', 'mail'],
+    //Returned attribute after search (returned value must match with username column for a successful login)
+    returnAttribute: 'dn',
+    //LDAP root credentials
+    root: {
+      dn: null, //cn=admin,dc=acme,dc=com
+      password: {
+        crypto: false,
+        value: null
+      }
+    }
   },
   crypto: {
     //Secret key to cipher/decipher client/user secret
