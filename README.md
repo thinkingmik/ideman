@@ -31,6 +31,7 @@ So, before continue with the installation of this module, go to [`ideman-cli`](h
 
 ## <a name="tables"></a>Tables
 ## <a name="diagram"></a>Diagram
+![alt text](https://github.com/thinkingmik/raw/master/ideman_db_diagram.png "ER Diagram")
 
 # <a name="install"></a>Installation
 **WARNING**:
