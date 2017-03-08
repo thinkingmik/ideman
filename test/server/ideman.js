@@ -22,7 +22,7 @@ ideman.init({
   },
   ldap: {
     enabled: false,
-    domainControllers: ['192.168.99.101'],
+    domainControllers: ['192.168.99.100'],
     searchScope: 'ou=users,dc=acme,dc=com',
     authAttributes: ['cn', 'mail'],
     returnAttribute: 'mail',

@@ -8,7 +8,7 @@ var Promise = require('bluebird');
 var username = 'm.andreoli';
 var password = 'Password1.';
 var fakePassword = 'asd';
-var ldapServer = ['192.168.99.101'];
+var ldapServer = ['192.168.99.100'];
 var fakeLdapServer = ['127.0.0.1'];
 var scope = 'ou=users,dc=acme,dc=com';
 var fakeScope = 'ou=xxx,dc=acme,dc=com';
