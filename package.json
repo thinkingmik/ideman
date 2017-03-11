@@ -30,9 +30,8 @@
   },
   "homepage": "https://github.com/thinkingmik/ideman#readme",
   "dependencies": {
-    "bcrypt-nodejs": "^0.0.3",
     "bluebird": "^3.5.0",
-    "crypto": "^0.0.3",
+    "crypton": "^1.0.2",
     "jsonwebtoken": "^7.3.0",
     "ldapjs": "^1.0.1",
     "lodash": "^4.17.4",

@@ -13,7 +13,6 @@ Implement OAuth2.0 and basic authentication cleanly into your NodeJS server appl
   * [Methods](#methods)
     * [Core](#initialize)
     * [Authorization](#validateusercredentials)
-    * [Cryptography](#cipher)
   * [Express middlewares](#middlewares)
   * [Express endpoints](#endpoints)
 * [About authorizations](#authorization_grants)
@@ -165,12 +164,6 @@ The configuration object allows you to redefine tables and models names. If you 
   * [exchangeRefreshToken](#exchangerefreshtoken)
   * [revokeToken](#revoketoken)
   * [ldapAuthentication](#ldapAuthentication)
-* Cryptography
-  * [cipher](#cipher)
-  * [decipher](#decipher)
-  * [crypt](#crypt)
-  * [compare](#compare)
-  * [verify](#verify)
 
 ### <a name="initialize"/>init( options ) : void
 Initialization of singleton instance.
@@ -235,15 +228,20 @@ If you don't specify any paramaters, it uses a default object:
       }
     }
   },
-  crypto: {
-    //Secret key to cipher/decipher client/user secret
-    secretKey: 'o!rDE(Qbrq7u4OV',
-    //Cipher algorithm
-    algorithm: 'AES-256-CBC',
-    //Input encoding for client/user secret before cipher
-    inputEncoding: 'utf8', //utf8|base64|hex
-    //Output encoding for client/user secret after cipher
-    outputEncoding: 'base64' //utf8|base64|hex
+  crypton: {
+    crypto: {
+      //Secret key to cipher/decipher client/user secret
+      secretKey: 'o!rDE(Qbrq7u4OV',
+      //Cipher algorithm
+      algorithm: 'AES-256-CBC',
+      //Input encoding for client/user secret before cipher
+      inputEncoding: 'utf8', //utf8|base64|hex
+      //Output encoding for client/user secret after cipher
+      outputEncoding: 'base64' //utf8|base64|hex
+    },
+    bcrypt: {
+      saltRounds: 5
+    }
   },
   token: {
     //Token life in seconds
@@ -537,116 +535,6 @@ __Throws__
 
 ```code
 {LDAPConnectionError|LDAPBindError|LDAPUnbindError|LDAPSearchError}
-```
----------------------------------------
-
-### <a name="cipher"/>cipher( text ) : Promise( string )
-Cipher a text with crypto. The operation is reversible.
-
-__Arguments__
-
-```code
-text  {string} Text to cipher
-```
-
-__Returns__
-
-```code
-{string} Returns the ciphered text
-```
-
-__Throws__
-
-```code
-{CipherHashError}
-```
----------------------------------------
-
-### <a name="cipher"/>decipher( text ) : Promise( string )
-Decipher a ciphered text with crypto.
-
-__Arguments__
-
-```code
-text  {string} Text to decipher
-```
-
-__Returns__
-
-```code
-{string} Returns the deciphered text
-```
-
-__Throws__
-
-```code
-{CipherHashError}
-```
----------------------------------------
-
-### <a name="cipher"/>crypt( text ) : Promise( string )
-Crypt a text with bcrypt. The operation is not reversible.
-
-__Arguments__
-
-```code
-text  {string} Text to crypt
-```
-
-__Returns__
-
-```code
-{string} Returns the crypted text
-```
-
-__Throws__
-```code
-{CryptHashError}
-```
----------------------------------------
-
-### <a name="compare"/>compare( text, ciphered, force ) : Promise( bool )
-Check if the clear text matches with the ciphered text. If force is specified it accepts two ciphered strings to compare. Use this method only with ciphered text.
-
-__Arguments__
-
-```code
-text      {string}  Text to compare with ciphered
-ciphered  {string}  Ciphered text
-force     {bool}    Force the compare
-```
-
-__Returns__
-
-```code
-{bool} Returns the result of the match
-```
-
-__Throws__
-```code
-{CipherHashError}
-```
----------------------------------------
-
-### <a name="verify"/>verify( text, crypted ) : Promise( bool )
-Check if the clear text matches with the crypted text. Use this method only with crypted text.
-
-__Arguments__
-
-```code
-text     {string}  Text to compare with ciphered
-crypted  {string}  Crypted text
-```
-
-__Returns__
-
-```code
-{bool} Returns the result of the match
-```
-
-__Throws__
-```code
-{CryptHashError}
 ```
 
 ## <a name="middlewares"></a>`Express` middlewares
