@@ -1,7 +1,8 @@
 var knex = require('knex')({
+/*
   client: 'pg',
   connection: 'postgres://postgres:postgres@pandora.net/ideman?charset=utf-8',
-/*
+*/
   client: 'mariasql',
   connection: {
       host: '127.0.0.1',
@@ -9,7 +10,6 @@ var knex = require('knex')({
       password: 'root',
       db: 'test'
   },
-*/
 	useNullAsDefault: true
 });
 var Bookshelf = require('bookshelf')(knex);
@@ -29,17 +29,19 @@ ideman.init({
   },
   ldap: {
     enabled: false,
-    domainControllers: ['192.168.99.100'],
-    searchScope: 'ou=users,dc=acme,dc=com',
-    authAttributes: ['cn', 'mail'],
-    returnAttribute: 'mail',
-    root: {
-      dn: 'cn=admin,dc=acme,dc=com',
-      password: {
-        crypto: true,
-        value: 'uV1ju3uY1JerhQ9z/nPr2w=='
+    ldapper: {
+      domainControllers: ['192.168.99.100'],
+      searchScope: 'ou=users,dc=acme,dc=com',
+      root: {
+        dn: 'cn=admin,dc=acme,dc=com',
+        password: {
+          crypton: false,
+          value: 'admin'
+        }
       }
-    }
+    },
+    authAttributes: ['cn', 'mail'],
+    returnAttribute: 'mail'
   },
   token: {
     life: 3600, //seconds

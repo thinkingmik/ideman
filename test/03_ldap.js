@@ -2,10 +2,11 @@ var cheerio = require('cheerio')
 var chai = require('chai');
 var should = chai.should();
 var expect = chai.expect;
+var assert = chai.assert;
 var ideman = require('./server/ideman');
 var Promise = require('bluebird');
 
-var username = 'm.andreoli';
+var username = 'joe';
 var password = 'Password1.';
 var fakePassword = 'asd';
 var ldapServer = ['192.168.99.100'];
@@ -20,15 +21,17 @@ var fakePasswordRoot = '1iuktueqUpn3q9GvT2KaLQ==';
 var ldapOptions = {
   ldap: {
     enabled: true,
-    domainControllers: ldapServer,
-    searchScope: scope,
-    authAttributes: ['cn', 'mail'],
+    authAttributes: ['uid', 'mail'],
     returnAttribute: 'mail',
-    root: {
-      dn: rootDn,
-      password: {
-        crypto: true,
-        value: passwordRoot
+    ldapper: {
+      domainControllers: ldapServer,
+      searchScope: scope,
+      root: {
+        dn: rootDn,
+        password: {
+          crypton: true,
+          value: passwordRoot
+        }
       }
     }
   }
@@ -36,15 +39,17 @@ var ldapOptions = {
 var wrongConnectionLdapOptions = {
   ldap: {
     enabled: true,
-    domainControllers: fakeLdapServer,
-    searchScope: scope,
     authAttributes: ['cn', 'mail'],
     returnAttribute: 'mail',
-    root: {
-      dn: rootDn,
-      password: {
-        crypto: true,
-        value: passwordRoot
+    ldapper: {
+      domainControllers: fakeLdapServer,
+      searchScope: scope,
+      root: {
+        dn: rootDn,
+        password: {
+          crypton: true,
+          value: passwordRoot
+        }
       }
     }
   }
@@ -52,15 +57,17 @@ var wrongConnectionLdapOptions = {
 var wrongBindLdapOptions = {
   ldap: {
     enabled: true,
-    domainControllers: ldapServer,
-    searchScope: scope,
     authAttributes: ['cn', 'mail'],
     returnAttribute: 'mail',
-    root: {
-      dn: fakeRootDn,
-      password: {
-        crypto: true,
-        value: passwordRoot
+    ldapper: {
+      domainControllers: ldapServer,
+      searchScope: scope,
+      root: {
+        dn: fakeRootDn,
+        password: {
+          crypton: true,
+          value: passwordRoot
+        }
       }
     }
   }
@@ -68,15 +75,17 @@ var wrongBindLdapOptions = {
 var wrongSearchLdapOptions = {
   ldap: {
     enabled: true,
-    domainControllers: ldapServer,
-    searchScope: fakeScope,
     authAttributes: ['cn', 'mail'],
     returnAttribute: 'mail',
-    root: {
-      dn: rootDn,
-      password: {
-        crypto: true,
-        value: passwordRoot
+    ldapper: {
+      domainControllers: ldapServer,
+      searchScope: fakeScope,
+      root: {
+        dn: rootDn,
+        password: {
+          crypton: true,
+          value: passwordRoot
+        }
       }
     }
   }
@@ -84,15 +93,17 @@ var wrongSearchLdapOptions = {
 var wrongSearchFilterLdapOptions = {
   ldap: {
     enabled: true,
-    domainControllers: ldapServer,
-    searchScope: scope,
     authAttributes: ['sn'],
     returnAttribute: 'mail',
-    root: {
-      dn: rootDn,
-      password: {
-        crypto: true,
-        value: passwordRoot
+    ldapper: {
+      domainControllers: ldapServer,
+      searchScope: scope,
+      root: {
+        dn: rootDn,
+        password: {
+          crypton: true,
+          value: passwordRoot
+        }
       }
     }
   }
@@ -115,11 +126,11 @@ describe('Authenticate through LDAP', function() {
       expect(err.name).to.be.equal('LDAPBindError');
     });
   });
-  it('should return a search error', function() {
+  it('should return an authentication error', function() {
     ideman.init(wrongSearchLdapOptions);
     return ideman.ldapAuthentication(username, password)
     .catch(function(err) {
-      expect(err.name).to.be.equal('LDAPSearchError');
+      expect(err.name).to.be.equal('LDAPAuthenticationError');
     });
   });
   it('should return null (wrong search filter)', function() {
@@ -141,6 +152,7 @@ describe('Authenticate through LDAP', function() {
     return ideman.ldapAuthentication(username, password)
     .then(function(res) {
       expect(res).to.not.be.null;
+      expect(res).to.have.property('dn');
     });
   });
 });

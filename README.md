@@ -228,21 +228,7 @@ If you don't specify any paramaters, it uses a default object:
       }
     }
   },
-  crypton: {
-    crypto: {
-      //Secret key to cipher/decipher client/user secret
-      secretKey: 'o!rDE(Qbrq7u4OV',
-      //Cipher algorithm
-      algorithm: 'AES-256-CBC',
-      //Input encoding for client/user secret before cipher
-      inputEncoding: 'utf8', //utf8|base64|hex
-      //Output encoding for client/user secret after cipher
-      outputEncoding: 'base64' //utf8|base64|hex
-    },
-    bcrypt: {
-      saltRounds: 5
-    }
-  },
+  crypton: null,
   token: {
     //Token life in seconds
     life: 3600,

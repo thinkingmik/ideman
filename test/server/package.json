@@ -9,11 +9,11 @@
     "body-parser": "^1.17.1",
     "bookshelf": "^0.10.3",
     "cookie-parser": "~1.4.3",
-    "debug": "^2.6.2",
+    "debug": "^2.6.3",
     "express": "^4.15.2",
     "jade": "~1.11.0",
-    "knex": "^0.12.7",
+    "knex": "^0.12.9",
     "morgan": "~1.8.1",
-    "serve-favicon": "~2.4.1"
+    "serve-favicon": "^2.4.2"
   }
 }
