@@ -203,31 +203,15 @@ If you don't specify any paramaters, it uses a default object:
   },
   ldap: {
     //Enable LDAP user binding
-    enabled: true,
-    //LDAP client options
-    options: {
-      ssl: false,
-      timeout: null,
-      connectTimeout: null,
-      strictdn: false
-    },
-    //List of dc controllers
-    domainControllers: [],
-    //LDAP search path, ex. ou=users,dc=acme,dc=com
-    searchScope: null,
+    enabled: false,
     //Search filters, ex. (|(cn=<username>)(mail=<username>))
     authAttributes: ['cn', 'mail'],
     //Returned attribute after search (returned value must match with username column for a successful login)
     returnAttribute: 'dn',
-    //LDAP root credentials
-    root: {
-      dn: null, //cn=admin,dc=acme,dc=com
-      password: {
-        crypto: false,
-        value: null
-      }
-    }
+    //Ldapper module configuration
+    ldapper: null
   },
+  //Crypton module configuration
   crypton: null,
   token: {
     //Token life in seconds

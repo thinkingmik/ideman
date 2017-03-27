@@ -133,26 +133,25 @@ describe('Authenticate through LDAP', function() {
       expect(err.name).to.be.equal('LDAPAuthenticationError');
     });
   });
-  it('should return null (wrong search filter)', function() {
+  it('should return a NotFoundError (wrong search filter)', function() {
     ideman.init(wrongSearchFilterLdapOptions);
     return ideman.ldapAuthentication(username, password)
-    .then(function(res) {
-      expect(res).to.be.null;
+    .catch(function(err) {
+      expect(err.name).to.be.equal('NotFoundError');
     });
   });
-  it('should return null', function() {
+  it('should return a NotFoundError', function() {
     ideman.init(ldapOptions);
     return ideman.ldapAuthentication(username, fakePassword)
-    .then(function(res) {
-      expect(res).to.be.null;
+    .catch(function(err) {
+      expect(err.name).to.be.equal('NotFoundError');
     });
   });
-  it('should not return null', function() {
+  it('should return a string', function() {
     ideman.init(ldapOptions);
     return ideman.ldapAuthentication(username, password)
     .then(function(res) {
       expect(res).to.not.be.null;
-      expect(res).to.have.property('dn');
     });
   });
 });
