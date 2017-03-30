@@ -33,7 +33,7 @@
     "bluebird": "^3.5.0",
     "crypton": "^1.0.6",
     "jsonwebtoken": "^7.3.0",
-    "ldapper": "^1.0.0",
+    "ldapper": "^1.0.3",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
     "oauth2orize": "^1.8.0",

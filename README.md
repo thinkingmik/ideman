@@ -1,4 +1,4 @@
-Identity Manager 3
+Identity Manager 3.x
 ================
 Implement OAuth2.0 and basic authentication cleanly into your NodeJS server application using [`Bookshelf`](http://bookshelfjs.org/) and [`knex`](http://knexjs.org/) as ORM and queries builder.
 
@@ -504,7 +504,7 @@ __Returns__
 __Throws__
 
 ```code
-{LDAPConnectionError|LDAPBindError|LDAPUnbindError|LDAPSearchError}
+{LDAPAuthenticationError}
 ```
 
 ## <a name="middlewares"></a>`Express` middlewares
